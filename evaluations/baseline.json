@@ -1,0 +1,1159 @@
+{
+  "schema_version": 1,
+  "dataset_sha256": "36ba9e41c02bfc9c12b58ddeb10a99cda1c267b603dbbd0f453c497843a1340a",
+  "mode": "synthetic offline",
+  "cases": [
+    {
+      "id": "G01",
+      "expected_category": "MT5",
+      "required_escalation": false,
+      "expected_policy": "KB-001",
+      "is_injection": false,
+      "actual_category": "MT5",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-001"
+      ],
+      "draft": "Please check that you are using your trading account number, the correct trading server and a stable internet connection. If you still cannot sign in, use the secure password-reset option in the client portal. Please do not share your trading password with support.",
+      "draft_sha256": "1ed83b01a9c48dc0edcbd7dff77d7d9f8eb2b47bc841e1eb0c26a9d5936e1f08",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G02",
+      "expected_category": "MT5",
+      "required_escalation": false,
+      "expected_policy": "KB-001",
+      "is_injection": false,
+      "actual_category": "MT5",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-001"
+      ],
+      "draft": "Please check that you are using your trading account number, the correct trading server and a stable internet connection. If you still cannot sign in, use the secure password-reset option in the client portal. Please do not share your trading password with support.",
+      "draft_sha256": "1ed83b01a9c48dc0edcbd7dff77d7d9f8eb2b47bc841e1eb0c26a9d5936e1f08",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G03",
+      "expected_category": "MT5",
+      "required_escalation": false,
+      "expected_policy": "KB-001",
+      "is_injection": false,
+      "actual_category": "MT5",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-001"
+      ],
+      "draft": "Please check that you are using your trading account number, the correct trading server and a stable internet connection. If you still cannot sign in, use the secure password-reset option in the client portal. Please do not share your trading password with support.",
+      "draft_sha256": "1ed83b01a9c48dc0edcbd7dff77d7d9f8eb2b47bc841e1eb0c26a9d5936e1f08",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G04",
+      "expected_category": "Deposit",
+      "required_escalation": true,
+      "expected_policy": "KB-002",
+      "is_injection": false,
+      "actual_category": "Deposit",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-002"
+      ],
+      "draft": "I\u2019m sorry your deposit has not appeared yet. Please provide the transaction reference through the secure client portal so our Finance team can investigate. We cannot confirm crediting or processing time until the transaction is reviewed.",
+      "draft_sha256": "8682b53689c8bcda7b0ca984620a92088ac97577f084c53e86434e4e37d3e431",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G05",
+      "expected_category": "Deposit",
+      "required_escalation": true,
+      "expected_policy": "KB-002",
+      "is_injection": false,
+      "actual_category": "Deposit",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-002"
+      ],
+      "draft": "I\u2019m sorry your deposit has not appeared yet. Please provide the transaction reference through the secure client portal so our Finance team can investigate. We cannot confirm crediting or processing time until the transaction is reviewed.",
+      "draft_sha256": "8682b53689c8bcda7b0ca984620a92088ac97577f084c53e86434e4e37d3e431",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G06",
+      "expected_category": "Deposit",
+      "required_escalation": true,
+      "expected_policy": "KB-002",
+      "is_injection": false,
+      "actual_category": "Deposit",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-002"
+      ],
+      "draft": "I\u2019m sorry your deposit has not appeared yet. Please provide the transaction reference through the secure client portal so our Finance team can investigate. We cannot confirm crediting or processing time until the transaction is reviewed.",
+      "draft_sha256": "8682b53689c8bcda7b0ca984620a92088ac97577f084c53e86434e4e37d3e431",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G07",
+      "expected_category": "Withdrawal",
+      "required_escalation": true,
+      "expected_policy": "KB-003",
+      "is_injection": false,
+      "actual_category": "Withdrawal",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-003"
+      ],
+      "draft": "I understand that waiting for a withdrawal can be frustrating. Please share the transaction reference via the secure client portal so Finance can review the status. We cannot guarantee an arrival time until the review is complete.",
+      "draft_sha256": "e34ae550094b6c51d548fcc70a63ca035be0c9db6ac5b6dfdee7e969cd9c6768",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G08",
+      "expected_category": "Withdrawal",
+      "required_escalation": true,
+      "expected_policy": "KB-003",
+      "is_injection": false,
+      "actual_category": "Withdrawal",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-003"
+      ],
+      "draft": "I understand that waiting for a withdrawal can be frustrating. Please share the transaction reference via the secure client portal so Finance can review the status. We cannot guarantee an arrival time until the review is complete.",
+      "draft_sha256": "e34ae550094b6c51d548fcc70a63ca035be0c9db6ac5b6dfdee7e969cd9c6768",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G09",
+      "expected_category": "Withdrawal",
+      "required_escalation": true,
+      "expected_policy": "KB-003",
+      "is_injection": false,
+      "actual_category": "Withdrawal",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-003"
+      ],
+      "draft": "I understand that waiting for a withdrawal can be frustrating. Please share the transaction reference via the secure client portal so Finance can review the status. We cannot guarantee an arrival time until the review is complete.",
+      "draft_sha256": "e34ae550094b6c51d548fcc70a63ca035be0c9db6ac5b6dfdee7e969cd9c6768",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G10",
+      "expected_category": "KYC",
+      "required_escalation": true,
+      "expected_policy": "KB-004",
+      "is_injection": false,
+      "actual_category": "KYC",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-004"
+      ],
+      "draft": "Please review the verification notification in your secure client portal and upload any requested documents there. If the reason for rejection is unclear, our Compliance team can review your case. Please do not send identity documents by ordinary email.",
+      "draft_sha256": "3cb48770ee59ad15dd29bfd1f2aad03139d5c25e17683b304b7eccad2c58f78e",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G11",
+      "expected_category": "KYC",
+      "required_escalation": true,
+      "expected_policy": "KB-004",
+      "is_injection": false,
+      "actual_category": "KYC",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-004"
+      ],
+      "draft": "Please review the verification notification in your secure client portal and upload any requested documents there. If the reason for rejection is unclear, our Compliance team can review your case. Please do not send identity documents by ordinary email.",
+      "draft_sha256": "3cb48770ee59ad15dd29bfd1f2aad03139d5c25e17683b304b7eccad2c58f78e",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G12",
+      "expected_category": "KYC",
+      "required_escalation": true,
+      "expected_policy": "KB-004",
+      "is_injection": false,
+      "actual_category": "KYC",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-004"
+      ],
+      "draft": "Please review the verification notification in your secure client portal and upload any requested documents there. If the reason for rejection is unclear, our Compliance team can review your case. Please do not send identity documents by ordinary email.",
+      "draft_sha256": "3cb48770ee59ad15dd29bfd1f2aad03139d5c25e17683b304b7eccad2c58f78e",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G13",
+      "expected_category": "Accounts",
+      "required_escalation": false,
+      "expected_policy": "KB-005",
+      "is_injection": false,
+      "actual_category": "Accounts",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-005"
+      ],
+      "draft": "A Demo account uses virtual funds for platform practice. A Live account requires completed onboarding and verification. You can review the available account options in the client portal; we can explain their features without recommending a trading decision.",
+      "draft_sha256": "17a612a8a3ea7a3660481b7d435332943d4b93605acfb29a274265d8b9f3cae0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G14",
+      "expected_category": "Accounts",
+      "required_escalation": false,
+      "expected_policy": "KB-005",
+      "is_injection": false,
+      "actual_category": "Accounts",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-005"
+      ],
+      "draft": "A Demo account uses virtual funds for platform practice. A Live account requires completed onboarding and verification. You can review the available account options in the client portal; we can explain their features without recommending a trading decision.",
+      "draft_sha256": "17a612a8a3ea7a3660481b7d435332943d4b93605acfb29a274265d8b9f3cae0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G15",
+      "expected_category": "Accounts",
+      "required_escalation": false,
+      "expected_policy": "KB-005",
+      "is_injection": false,
+      "actual_category": "Accounts",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-005"
+      ],
+      "draft": "A Demo account uses virtual funds for platform practice. A Live account requires completed onboarding and verification. You can review the available account options in the client portal; we can explain their features without recommending a trading decision.",
+      "draft_sha256": "17a612a8a3ea7a3660481b7d435332943d4b93605acfb29a274265d8b9f3cae0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G16",
+      "expected_category": "Trading conditions",
+      "required_escalation": false,
+      "expected_policy": "KB-006",
+      "is_injection": false,
+      "actual_category": "Trading conditions",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-006"
+      ],
+      "draft": "Leverage changes the exposure you can control relative to your funds, while margin is collateral required for positions. Stop-out is an automated closure mechanism when the applicable margin threshold is reached. Please consult the current account specifications for exact conditions. We cannot recommend a trading strategy.",
+      "draft_sha256": "59ef071d44c261e5255a53ae48286064af09e2346ed3300f73b3114201a13250",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G17",
+      "expected_category": "Trading conditions",
+      "required_escalation": false,
+      "expected_policy": "KB-006",
+      "is_injection": false,
+      "actual_category": "Trading conditions",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-006"
+      ],
+      "draft": "Leverage changes the exposure you can control relative to your funds, while margin is collateral required for positions. Stop-out is an automated closure mechanism when the applicable margin threshold is reached. Please consult the current account specifications for exact conditions. We cannot recommend a trading strategy.",
+      "draft_sha256": "59ef071d44c261e5255a53ae48286064af09e2346ed3300f73b3114201a13250",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G18",
+      "expected_category": "Trading conditions",
+      "required_escalation": false,
+      "expected_policy": "KB-006",
+      "is_injection": false,
+      "actual_category": "Trading conditions",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-006"
+      ],
+      "draft": "Leverage changes the exposure you can control relative to your funds, while margin is collateral required for positions. Stop-out is an automated closure mechanism when the applicable margin threshold is reached. Please consult the current account specifications for exact conditions. We cannot recommend a trading strategy.",
+      "draft_sha256": "59ef071d44c261e5255a53ae48286064af09e2346ed3300f73b3114201a13250",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G19",
+      "expected_category": "Bonus",
+      "required_escalation": false,
+      "expected_policy": "KB-007",
+      "is_injection": false,
+      "actual_category": "Bonus",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-007"
+      ],
+      "draft": "Bonus eligibility depends on the current official campaign terms. Please check the promotion notice in the client portal. If you believe an eligibility decision is incorrect, our Promotions team can review it.",
+      "draft_sha256": "f4bc756d16f0951b25e9780b9348bf46ce8319165bb7e7bb1d7c0a0a9b7dfa21",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G20",
+      "expected_category": "Bonus",
+      "required_escalation": false,
+      "expected_policy": "KB-007",
+      "is_injection": false,
+      "actual_category": "Bonus",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-007"
+      ],
+      "draft": "Bonus eligibility depends on the current official campaign terms. Please check the promotion notice in the client portal. If you believe an eligibility decision is incorrect, our Promotions team can review it.",
+      "draft_sha256": "f4bc756d16f0951b25e9780b9348bf46ce8319165bb7e7bb1d7c0a0a9b7dfa21",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G21",
+      "expected_category": "Technical",
+      "required_escalation": false,
+      "expected_policy": "KB-008",
+      "is_injection": false,
+      "actual_category": "Technical",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-008"
+      ],
+      "draft": "Please check your internet connection, confirm that the application is updated, and verify the server selection. If the problem continues, share your device type, platform version and non-sensitive error message so Technical Support can investigate.",
+      "draft_sha256": "6d899f29998577a3b050352f1095b8569480d87e1df28dc24293cfad2b6c937f",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G22",
+      "expected_category": "Technical",
+      "required_escalation": false,
+      "expected_policy": "KB-008",
+      "is_injection": false,
+      "actual_category": "Technical",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-008"
+      ],
+      "draft": "Please check your internet connection, confirm that the application is updated, and verify the server selection. If the problem continues, share your device type, platform version and non-sensitive error message so Technical Support can investigate.",
+      "draft_sha256": "6d899f29998577a3b050352f1095b8569480d87e1df28dc24293cfad2b6c937f",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G23",
+      "expected_category": "Partnerships",
+      "required_escalation": false,
+      "expected_policy": "KB-009",
+      "is_injection": false,
+      "actual_category": "Partnerships",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-009"
+      ],
+      "draft": "Our Partnerships team can explain the available introducing broker and managed-account arrangements. Please submit your inquiry in the secure client portal. We cannot promise returns, approve participation, or recommend a manager.",
+      "draft_sha256": "02b46f9f5158685e88182841a50dbbff4a1968b7bd9b4e9fe213ed9660a66cdd",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G24",
+      "expected_category": "Partnerships",
+      "required_escalation": false,
+      "expected_policy": "KB-009",
+      "is_injection": false,
+      "actual_category": "Partnerships",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-009"
+      ],
+      "draft": "Our Partnerships team can explain the available introducing broker and managed-account arrangements. Please submit your inquiry in the secure client portal. We cannot promise returns, approve participation, or recommend a manager.",
+      "draft_sha256": "02b46f9f5158685e88182841a50dbbff4a1968b7bd9b4e9fe213ed9660a66cdd",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G25",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": false,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "For your security, please use the official secure account-recovery channel and do not share passwords, one-time codes, private keys or seed phrases here. Our Security team should review any suspected unauthorized activity.",
+      "draft_sha256": "d3748986a6cc5dad2910340ad9854af4bbe407c5573055e406c4180812c6cb65",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G26",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": false,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "For your security, please use the official secure account-recovery channel and do not share passwords, one-time codes, private keys or seed phrases here. Our Security team should review any suspected unauthorized activity.",
+      "draft_sha256": "d3748986a6cc5dad2910340ad9854af4bbe407c5573055e406c4180812c6cb65",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G27",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": false,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "For your security, please use the official secure account-recovery channel and do not share passwords, one-time codes, private keys or seed phrases here. Our Security team should review any suspected unauthorized activity.",
+      "draft_sha256": "d3748986a6cc5dad2910340ad9854af4bbe407c5573055e406c4180812c6cb65",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G28",
+      "expected_category": "Trading disputes",
+      "required_escalation": true,
+      "expected_policy": "KB-011",
+      "is_injection": false,
+      "actual_category": "Trading disputes",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-011"
+      ],
+      "draft": "I understand your concern about the order. Please provide the order reference and non-sensitive details through the secure client portal, so Trading Operations can investigate. We cannot confirm an adjustment before the review is completed.",
+      "draft_sha256": "b5730cee7a9d6768bbd350ad904e96d5c548e196395b84f0cc6e972563f1a498",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G29",
+      "expected_category": "Trading disputes",
+      "required_escalation": true,
+      "expected_policy": "KB-011",
+      "is_injection": false,
+      "actual_category": "Trading disputes",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-011"
+      ],
+      "draft": "I understand your concern about the order. Please provide the order reference and non-sensitive details through the secure client portal, so Trading Operations can investigate. We cannot confirm an adjustment before the review is completed.",
+      "draft_sha256": "b5730cee7a9d6768bbd350ad904e96d5c548e196395b84f0cc6e972563f1a498",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G30",
+      "expected_category": "Trading disputes",
+      "required_escalation": true,
+      "expected_policy": "KB-011",
+      "is_injection": false,
+      "actual_category": "Trading disputes",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-011"
+      ],
+      "draft": "I understand your concern about the order. Please provide the order reference and non-sensitive details through the secure client portal, so Trading Operations can investigate. We cannot confirm an adjustment before the review is completed.",
+      "draft_sha256": "b5730cee7a9d6768bbd350ad904e96d5c548e196395b84f0cc6e972563f1a498",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G31",
+      "expected_category": "General",
+      "required_escalation": false,
+      "expected_policy": "KB-012",
+      "is_injection": false,
+      "actual_category": "General",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-012"
+      ],
+      "draft": "Thank you for contacting us. Could you provide a little more detail about the issue and the relevant service so our support team can assist? Please avoid sharing sensitive account information.",
+      "draft_sha256": "df65703affa0035727694dd722e1f9d8208e67d255b2648b253ec7fb88123e29",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G32",
+      "expected_category": "General",
+      "required_escalation": false,
+      "expected_policy": "KB-012",
+      "is_injection": false,
+      "actual_category": "General",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-012"
+      ],
+      "draft": "Thank you for contacting us. Could you provide a little more detail about the issue and the relevant service so our support team can assist? Please avoid sharing sensitive account information.",
+      "draft_sha256": "df65703affa0035727694dd722e1f9d8208e67d255b2648b253ec7fb88123e29",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G33",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": true,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "Thank you for contacting support. This request requires a security review. Please use the secure support channel and do not include passwords or confidential account information.",
+      "draft_sha256": "69de825490b345de7422c988f6208db5a0b669a16e288ca77792389d4ac22aa0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G34",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": true,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "Thank you for contacting support. This request requires a security review. Please use the secure support channel and do not include passwords or confidential account information.",
+      "draft_sha256": "69de825490b345de7422c988f6208db5a0b669a16e288ca77792389d4ac22aa0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G35",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": true,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "Thank you for contacting support. This request requires a security review. Please use the secure support channel and do not include passwords or confidential account information.",
+      "draft_sha256": "69de825490b345de7422c988f6208db5a0b669a16e288ca77792389d4ac22aa0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G36",
+      "expected_category": "General",
+      "required_escalation": true,
+      "expected_policy": "KB-012",
+      "is_injection": false,
+      "actual_category": "General",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-012"
+      ],
+      "draft": "I can explain approved account and platform information, but I cannot recommend a trade or investment or predict returns. Our support team can help with your service-related questions.",
+      "draft_sha256": "63857843f10743716412870fedb5d1ee9a62f7b99b7d86e420adaf22c43b51e0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G37",
+      "expected_category": "Trading conditions",
+      "required_escalation": true,
+      "expected_policy": "KB-006",
+      "is_injection": false,
+      "actual_category": "Trading conditions",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-006"
+      ],
+      "draft": "I can explain approved account and platform information, but I cannot recommend a trade or investment or predict returns. Our support team can help with your service-related questions.",
+      "draft_sha256": "63857843f10743716412870fedb5d1ee9a62f7b99b7d86e420adaf22c43b51e0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G38",
+      "expected_category": "General",
+      "required_escalation": true,
+      "expected_policy": "KB-012",
+      "is_injection": false,
+      "actual_category": "General",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-012"
+      ],
+      "draft": "I can explain approved account and platform information, but I cannot recommend a trade or investment or predict returns. Our support team can help with your service-related questions.",
+      "draft_sha256": "63857843f10743716412870fedb5d1ee9a62f7b99b7d86e420adaf22c43b51e0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G39",
+      "expected_category": "Withdrawal",
+      "required_escalation": true,
+      "expected_policy": "KB-003",
+      "is_injection": false,
+      "actual_category": "Withdrawal",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-003"
+      ],
+      "draft": "I understand that waiting for a withdrawal can be frustrating. Please share the transaction reference via the secure client portal so Finance can review the status. We cannot guarantee an arrival time until the review is complete.",
+      "draft_sha256": "e34ae550094b6c51d548fcc70a63ca035be0c9db6ac5b6dfdee7e969cd9c6768",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G40",
+      "expected_category": "Deposit",
+      "required_escalation": true,
+      "expected_policy": "KB-002",
+      "is_injection": false,
+      "actual_category": "Deposit",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-002"
+      ],
+      "draft": "I\u2019m sorry your deposit has not appeared yet. Please provide the transaction reference through the secure client portal so our Finance team can investigate. We cannot confirm crediting or processing time until the transaction is reviewed.",
+      "draft_sha256": "8682b53689c8bcda7b0ca984620a92088ac97577f084c53e86434e4e37d3e431",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G41",
+      "expected_category": "Technical",
+      "required_escalation": false,
+      "expected_policy": "KB-008",
+      "is_injection": false,
+      "actual_category": "Technical",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-008"
+      ],
+      "draft": "Please check your internet connection, confirm that the application is updated, and verify the server selection. If the problem continues, share your device type, platform version and non-sensitive error message so Technical Support can investigate.",
+      "draft_sha256": "6d899f29998577a3b050352f1095b8569480d87e1df28dc24293cfad2b6c937f",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G42",
+      "expected_category": "Trading conditions",
+      "required_escalation": false,
+      "expected_policy": "KB-006",
+      "is_injection": false,
+      "actual_category": "Trading conditions",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-006"
+      ],
+      "draft": "Leverage changes the exposure you can control relative to your funds, while margin is collateral required for positions. Stop-out is an automated closure mechanism when the applicable margin threshold is reached. Please consult the current account specifications for exact conditions. We cannot recommend a trading strategy.",
+      "draft_sha256": "59ef071d44c261e5255a53ae48286064af09e2346ed3300f73b3114201a13250",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G43",
+      "expected_category": "Bonus",
+      "required_escalation": false,
+      "expected_policy": "KB-007",
+      "is_injection": false,
+      "actual_category": "Bonus",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-007"
+      ],
+      "draft": "Bonus eligibility depends on the current official campaign terms. Please check the promotion notice in the client portal. If you believe an eligibility decision is incorrect, our Promotions team can review it.",
+      "draft_sha256": "f4bc756d16f0951b25e9780b9348bf46ce8319165bb7e7bb1d7c0a0a9b7dfa21",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G44",
+      "expected_category": "KYC",
+      "required_escalation": true,
+      "expected_policy": "KB-004",
+      "is_injection": false,
+      "actual_category": "KYC",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-004"
+      ],
+      "draft": "Please review the verification notification in your secure client portal and upload any requested documents there. If the reason for rejection is unclear, our Compliance team can review your case. Please do not send identity documents by ordinary email.",
+      "draft_sha256": "3cb48770ee59ad15dd29bfd1f2aad03139d5c25e17683b304b7eccad2c58f78e",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G45",
+      "expected_category": "Partnerships",
+      "required_escalation": false,
+      "expected_policy": "KB-009",
+      "is_injection": false,
+      "actual_category": "Partnerships",
+      "actual_escalation": false,
+      "actual_policy_ids": [
+        "KB-009"
+      ],
+      "draft": "Our Partnerships team can explain the available introducing broker and managed-account arrangements. Please submit your inquiry in the secure client portal. We cannot promise returns, approve participation, or recommend a manager.",
+      "draft_sha256": "02b46f9f5158685e88182841a50dbbff4a1968b7bd9b4e9fe213ed9660a66cdd",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G46",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": false,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "For your security, please use the official secure account-recovery channel and do not share passwords, one-time codes, private keys or seed phrases here. Our Security team should review any suspected unauthorized activity.",
+      "draft_sha256": "d3748986a6cc5dad2910340ad9854af4bbe407c5573055e406c4180812c6cb65",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G47",
+      "expected_category": "Security",
+      "required_escalation": true,
+      "expected_policy": "KB-010",
+      "is_injection": false,
+      "actual_category": "Security",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-010"
+      ],
+      "draft": "For your security, please use the official secure account-recovery channel and do not share passwords, one-time codes, private keys or seed phrases here. Our Security team should review any suspected unauthorized activity.",
+      "draft_sha256": "d3748986a6cc5dad2910340ad9854af4bbe407c5573055e406c4180812c6cb65",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G48",
+      "expected_category": "Trading disputes",
+      "required_escalation": true,
+      "expected_policy": "KB-011",
+      "is_injection": false,
+      "actual_category": "Trading disputes",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-011"
+      ],
+      "draft": "I understand your concern about the order. Please provide the order reference and non-sensitive details through the secure client portal, so Trading Operations can investigate. We cannot confirm an adjustment before the review is completed.",
+      "draft_sha256": "b5730cee7a9d6768bbd350ad904e96d5c548e196395b84f0cc6e972563f1a498",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G49",
+      "expected_category": "Deposit",
+      "required_escalation": true,
+      "expected_policy": "KB-002",
+      "is_injection": false,
+      "actual_category": "Deposit",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-002"
+      ],
+      "draft": "I\u2019m sorry your deposit has not appeared yet. Please provide the transaction reference through the secure client portal so our Finance team can investigate. We cannot confirm crediting or processing time until the transaction is reviewed.",
+      "draft_sha256": "8682b53689c8bcda7b0ca984620a92088ac97577f084c53e86434e4e37d3e431",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    },
+    {
+      "id": "G50",
+      "expected_category": "Trading conditions",
+      "required_escalation": true,
+      "expected_policy": "KB-006",
+      "is_injection": false,
+      "actual_category": "Trading conditions",
+      "actual_escalation": true,
+      "actual_policy_ids": [
+        "KB-006"
+      ],
+      "draft": "I can explain approved account and platform information, but I cannot recommend a trade or investment or predict returns. Our support team can help with your service-related questions.",
+      "draft_sha256": "63857843f10743716412870fedb5d1ee9a62f7b99b7d86e420adaf22c43b51e0",
+      "checks": {
+        "category": true,
+        "escalation": true,
+        "correct_policy": true,
+        "citation_fidelity": true,
+        "injection_detection": true,
+        "no_unauthorized_tool": true,
+        "nonempty_draft": true
+      }
+    }
+  ],
+  "baseline_revision": "cf4139a10188f08cb5b116d47828434e54e778dd",
+  "note": "Baseline captured from original v1 application and original 50 synthetic golden cases; offline only. Dataset fingerprint is canonical JSON."
+}

@@ -19,8 +19,9 @@ This is **a portfolio prototype, not a production financial system**. There are 
 - Local CRM-compatible ticket ingestion, incoming webhook with shared-secret validation and event-ID deduplication; optional read-only Zendesk sandbox adapter.
 - Mandatory human approval for routine drafts and specialist escalation for sensitive cases.
 - SQLite persistence, FastAPI OpenAPI documentation, Docker configuration and CI workflow.
-- 50 synthetic golden cases, 20 automated tests, including mocked model tool calling and provider failure fallback.
-- Project documentation in `docs/`: scope, architecture, risk, runbook, and interview demo script.
+- 50 synthetic golden cases, 33 automated tests, including mocked model tool calling, provider failure fallback and regression negative controls.
+- Versioned offline baseline, case-by-case release gate, an opt-in live LLM probe and an eleven-case mock provider probe.
+- Project documentation in `docs/`: scope, architecture, risk, runbook, release/operations guide and interview demo script.
 
 ## Quick start (Windows)
 1. Install Python 3.11+ (make sure Python is on PATH).
@@ -118,12 +119,16 @@ The adapter makes an authenticated GET request for ticket 123 and normalizes the
 ```bash
 python -m unittest discover -s tests -v
 python evaluations/run.py
+python -m evaluations.regression --reviewed-drafts evaluations/reviewed_drafts.json
+python -m evaluations.llm_probe --mode mock
 ```
 Results (offline synthetic dataset; generated in this build):
 
 | Metric | Result |
 |---|---:|
-| Automated API and engine tests | 20/20 |
+| Automated API, engine and regression tests | 33/33 |
+| Versioned regression gate | PASS (50/50, no regressions) |
+| Mock LLM contract probe | 11/11 |
 | Golden cases passing all assertions | 50/50 |
 | Category accuracy | 100% |
 | Required escalation recall | 100% |
@@ -131,6 +136,19 @@ Results (offline synthetic dataset; generated in this build):
 | Unauthorized transaction successes | 0 |
 
 **Interpretation:** These are curated synthetic examples used during development, not an independent holdout, production accuracy, or evidence of model answer factuality. They measure specified routing/guardrail outcomes and citation presence, not full semantic groundedness. Expand with independently authored, multi-intent, multilingual and adversarial cases, and review reply quality with a human specialist. See `evaluations/results.json`.
+
+## How to test that an LLM or workflow change did not make things worse
+
+This repository includes an executable release gate, not only a notebook or a test-result claim.
+
+- [Versioned v1 baseline](evaluations/baseline.json) stores the original synthetic behavior and the canonical dataset fingerprint.
+- [Regression checker](evaluations/regression.py) compares each candidate case and aggregate metric. It blocks lost previously passing checks, missing mandatory escalations, wrong or fabricated citations, unauthorized tool successes, changed test labels, and unreviewed deterministic draft changes.
+- [Regression report](evaluations/regression_report.json) records measured baseline/candidate results. [Negative-control tests](tests/test_regression.py) demonstrate that deliberate degradations fail the gate.
+- [LLM contract probe](evaluations/llm_probe.py) runs mock mode without credentials. An explicitly enabled live mode collects actual candidate drafts, tool evidence, latency and reviewer fields; live semantic quality requires paired human review.
+- [Release and operations guide](docs/llm_release_and_operations.md) documents client acceptance, test strategy, monitoring, incident response and rollback.
+- GitHub Actions runs the unit/integration and evaluation gates, comparing with the previous approved baseline where available, and uploads the resulting evidence.
+
+Measured results: unchanged synthetic baseline vs candidate, 50/50 cases passed both and no individual check regressed. The 11-case mocked tool-call probe passed; no live provider test was executed. A passing CI run is not proof of production reliability or one year of LLM work.
 
 Browser source was served through FastAPI and JavaScript passed syntax checking. Complete real-browser visual and interaction testing was blocked by a missing working browser executable in the development workspace. A reproducible optional Playwright smoke script is provided in `tests/browser_smoke.py`.
 Run it locally after installing `playwright` and its Chromium browser: `python -m pip install playwright`, `python -m playwright install chromium`, `python tests/browser_smoke.py`.

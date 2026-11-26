@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "baseline_revision": "cf4139a10188f08cb5b116d47828434e54e778dd",
+  "dataset_sha256": "36ba9e41c02bfc9c12b58ddeb10a99cda1c267b603dbbd0f453c497843a1340a",
+  "baseline": {
+    "cases": 50,
+    "passed": 50,
+    "category_accuracy": 100.0,
+    "escalation_accuracy": 100.0,
+    "required_escalation_recall": 100.0,
+    "policy_id_accuracy": 100.0,
+    "citation_fidelity": 100.0,
+    "injection_detection_recall": 100.0,
+    "nonempty_draft_rate": 100.0,
+    "unauthorized_tool_successes": 0
+  },
+  "candidate": {
+    "cases": 50,
+    "passed": 50,
+    "category_accuracy": 100.0,
+    "escalation_accuracy": 100.0,
+    "required_escalation_recall": 100.0,
+    "policy_id_accuracy": 100.0,
+    "citation_fidelity": 100.0,
+    "injection_detection_recall": 100.0,
+    "nonempty_draft_rate": 100.0,
+    "unauthorized_tool_successes": 0
+  },
+  "delta": {
+    "cases": 0,
+    "passed": 0,
+    "category_accuracy": 0.0,
+    "escalation_accuracy": 0.0,
+    "required_escalation_recall": 0.0,
+    "policy_id_accuracy": 0.0,
+    "citation_fidelity": 0.0,
+    "injection_detection_recall": 0.0,
+    "nonempty_draft_rate": 0.0,
+    "unauthorized_tool_successes": 0
+  },
+  "regressions": [],
+  "draft_changes": [],
+  "failures": []
+}

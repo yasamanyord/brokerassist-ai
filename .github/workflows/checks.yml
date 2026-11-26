@@ -2,14 +2,46 @@ name: BrokerAssist checks
 on:
   push:
   pull_request:
+permissions:
+  contents: read
 jobs:
   offline-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: python -m pip install -r requirements.txt
-      - run: python -m unittest discover -s tests -v
-      - run: python evaluations/run.py
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -v
+      - name: Golden cases
+        run: python evaluations/run.py
+      - name: Baseline regression release gate
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          mkdir -p runtime
+          # Compare against the previously approved baseline when available.
+          # The initial baseline-adding commit bootstraps from its committed snapshot.
+          if [ -n "$BASE_SHA" ] && git cat-file -e "$BASE_SHA:evaluations/baseline.json" 2>/dev/null; then
+            git show "$BASE_SHA:evaluations/baseline.json" > runtime/previous_baseline.json
+            python -m evaluations.regression --baseline runtime/previous_baseline.json --reviewed-drafts evaluations/reviewed_drafts.json --report runtime/regression_report.json
+          else
+            python -m evaluations.regression --reviewed-drafts evaluations/reviewed_drafts.json --report runtime/regression_report.json
+          fi
+      - name: Mock LLM tool-call contract probe (no API key)
+        run: python -m evaluations.llm_probe --mode mock
+      - name: Upload evaluation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-evidence
+          path: |
+            evaluations/results.json
+            runtime/regression_report.json
+            runtime/llm_probe_mock.json
+          if-no-files-found: warn
