@@ -27,3 +27,6 @@ Policy owner should version approved policy and templates, re-run tests after ch
 
 ## Backup and reset
 The default database lives in runtime/brokerassist.db. Stop the server before backing it up. To start a clean synthetic demo, set BROKERASSIST_DB to a new path or move the existing database to a backup file while stopped. No real production data should be stored here.
+
+## Optional live service validation and restricted hosting
+Follow [the live setup guide](live_setup.md) for opt-in live LLM testing, read-only Zendesk OAuth and a password-protected offline portfolio deployment. Never expose the local unauthenticated mode.

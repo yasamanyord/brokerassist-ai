@@ -1,0 +1,77 @@
+name: Manual live validation (synthetic only)
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Select the integration to validate
+        type: choice
+        options: [llm, zendesk]
+        default: llm
+      confirm_synthetic:
+        description: Confirm synthetic data only and authorize any API usage charges
+        type: boolean
+        required: true
+        default: false
+      ticket_id:
+        description: Exact synthetic Zendesk ticket ID (CRM only)
+        type: string
+        required: false
+permissions:
+  contents: read
+concurrency:
+  group: live-validation
+  cancel-in-progress: false
+jobs:
+  llm:
+    if: inputs.confirm_synthetic && inputs.target == 'llm' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: synthetic-validation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - name: Validate real LLM tool calls (one repeat)
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-4.1-mini
+        run: python -m evaluations.llm_probe --mode live --confirm-synthetic-data --repeats 1 --output runtime/llm_live.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-llm-review-pending
+          path: runtime/llm_live.json
+          retention-days: 7
+          if-no-files-found: warn
+  zendesk:
+    if: inputs.confirm_synthetic && inputs.target == 'zendesk' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: synthetic-validation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - name: Check read-only sandbox ticket import
+        env:
+          ALLOW_ZENDESK_SANDBOX: "yes"
+          ZENDESK_SUBDOMAIN: ${{ secrets.ZENDESK_SUBDOMAIN }}
+          ZENDESK_CLIENT_ID: ${{ secrets.ZENDESK_CLIENT_ID }}
+          ZENDESK_CLIENT_SECRET: ${{ secrets.ZENDESK_CLIENT_SECRET }}
+          SYNTHETIC_TICKET_ID: ${{ inputs.ticket_id }}
+        run: python -m evaluations.crm_probe --ticket-id "$SYNTHETIC_TICKET_ID" --confirm-synthetic-data
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-crm-validation
+          path: runtime/crm_probe.json
+          retention-days: 7
+          if-no-files-found: warn

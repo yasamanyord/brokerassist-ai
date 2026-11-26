@@ -19,7 +19,7 @@ This is **a portfolio prototype, not a production financial system**. There are 
 - Local CRM-compatible ticket ingestion, incoming webhook with shared-secret validation and event-ID deduplication; optional read-only Zendesk sandbox adapter.
 - Mandatory human approval for routine drafts and specialist escalation for sensitive cases.
 - SQLite persistence, FastAPI OpenAPI documentation, Docker configuration and CI workflow.
-- 50 synthetic golden cases, 42 automated tests, including mocked model tool calling, provider failure fallback and regression negative controls.
+- 50 synthetic golden cases, 50 automated tests, including mocked model tool calling, provider failure fallback and regression negative controls.
 - Versioned offline baseline, case-by-case release gate, an opt-in live LLM probe and an eleven-case mock provider probe.
 - Independent risk scanning for mixed-intent tickets; output validation and current-version server approval safeguards; 20 adversarial and routine-control safety evaluation cases.
 - Project documentation in `docs/`: scope, architecture, risk, runbook, release/operations guide and interview demo script.
@@ -110,11 +110,11 @@ curl -X POST http://127.0.0.1:8000/api/webhooks/ticket \
 ```
 Repeat the event ID to check deduplication. The webhook creates an unverified ticket; analysis is triggered by the operator. A production adapter would verify source-native signing, timestamps and replay rules, enqueue work, and authenticate the operator.
 
-For an actual Zendesk **synthetic sandbox** read-only import, set `ALLOW_ZENDESK_SANDBOX=yes`, `ZENDESK_SUBDOMAIN`, `ZENDESK_EMAIL`, and `ZENDESK_API_TOKEN`, then run:
+For an actual Zendesk **synthetic sandbox** read-only import, set `ALLOW_ZENDESK_SANDBOX=yes`, `ZENDESK_SUBDOMAIN`, `ZENDESK_CLIENT_ID`, and `ZENDESK_CLIENT_SECRET` for a read-only OAuth client, then run:
 ```bash
 python -m app.integrations.zendesk 123
 ```
-The adapter makes an authenticated GET request for ticket 123 and normalizes the first description into a local ticket. No write or message sending is implemented. Live Zendesk credentials were not available; mapping is tested locally. Zendesk docs: https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/
+The adapter makes an authenticated GET request for ticket 123 and normalizes the first description into a local ticket. No write or message sending is implemented. Live Zendesk credentials were not available; OAuth token retrieval, request method, scope, fixture validation, mapping and deduplication are mock tested. See [live setup](docs/live_setup.md). Zendesk docs: https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/
 
 ## Run tests
 ```bash
@@ -128,7 +128,7 @@ Results (offline synthetic dataset; generated in this build):
 
 | Metric | Result |
 |---|---:|
-| Automated API, engine, regression and guardrail tests | 42/42 |
+| Automated API, integration, regression and hosted-mode tests | 50/50 |
 | Adversarial and routine-control safety cases | 20/20 |
 | Versioned regression gate | PASS (50/50, no regressions) |
 | Mock LLM contract probe | 11/11 |
@@ -188,9 +188,13 @@ docker-compose.yml     Local deployment
 run_demo.bat           Windows quick start
 ```
 
+## Connect live services and host a restricted demo
+
+[Live LLM, OAuth CRM and Render hosting guide](docs/live_setup.md) explains how to configure credentials securely. The manual GitHub Actions workflow is not triggered on push and requires explicit synthetic-data and charge confirmation. The prepared Render Blueprint enables a password-protected offline synthetic demo; it does not allow live model keys or hosted webhooks. The deployment itself and live integration tests remain pending.
+
 ## Known limitations and next milestones
 - Pattern-based input/output guardrails are not complete semantic or multilingual safety checks; a human must review every approved response.
-- Single-user, localhost only. No authentication, production-grade authorization, multi-tenancy, CSRF protection, TLS termination, native signed webhooks, rate limits or RBAC.
+- Local mode is single-user and unauthenticated; restricted hosted synthetic mode requires a shared credential and HTTPS origin, guards JSON writes, and disables live keys/webhooks. It is not production-grade authentication/authorization, multi-tenancy, full CSRF protection, TLS termination, native signed webhooks, rate limiting or RBAC.
 - English-focused lexical retrieval; not embeddings or multilingual semantics. Rules are not complete and multi-intent classification can miss secondary issues. The LLM draft needs human factual and policy review.
 - SQLite is fine for the demo; production client deployment needs a migration plan, managed DB, backups, queue, observability, permissions and data retention controls.
 - Basic redaction is not complete PII detection. Use only synthetic data.

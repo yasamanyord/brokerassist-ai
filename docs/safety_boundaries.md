@@ -23,7 +23,7 @@ BrokerAssist is an executable, local-first portfolio product. It is not a produc
 - No tool exists to send a message, transfer funds, make trades, edit real balances, verify identities or reset credentials.
 - Decisions are enforced in backend code regardless of the UI. Rules have a version; existing open tickets must be re-analyzed when their saved guardrail version is stale. Historical finalized tickets are unchanged.
 
-The rule-based detector is deliberately conservative, English-focused and not exhaustive; it may over-escalate benign wording and fail to detect novel paraphrases, unsafe semantic statements or multilingual attacks. Even a candidate that passes every test must receive human review. Basic redaction is not comprehensive DLP. Authentication, access control, tenancy and native signed CRM webhooks remain required before operating on real records. Do not expose this local demo directly to the internet.
+The rule-based detector is deliberately conservative, English-focused and not exhaustive; it may over-escalate benign wording and fail to detect novel paraphrases, unsafe semantic statements or multilingual attacks. Even a candidate that passes every test must receive human review. Basic redaction is not comprehensive DLP. Authentication, access control, tenancy and native signed CRM webhooks remain required before operating on real records. Do not expose local mode. A separate restricted, password-protected hosted offline mode is available for synthetic portfolio reviewers only; see [live setup](live_setup.md).
 
 ## Measured release evidence
 

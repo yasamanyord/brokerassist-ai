@@ -6,15 +6,17 @@ from fastapi import FastAPI, HTTPException, Header
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-from . import store
+from . import store, hosted
 from .engine import analyze, POLICIES, ROOT
 
 @asynccontextmanager
 async def lifespan(app):
+    if hosted.enabled(): hosted.configuration()
     store.initialize()
     yield
 
-app=FastAPI(title="BrokerAssist AI",version="1.2.0",description="Local synthetic support portfolio demo; no live customer actions.",lifespan=lifespan)
+app=FastAPI(title="BrokerAssist AI",version="1.3.0",description="Local synthetic support portfolio demo; no live customer actions.",lifespan=lifespan)
+app.middleware("http")(hosted.hosted_access)
 app.mount("/static",StaticFiles(directory=ROOT/"app/static"),name="static")
 
 class Intake(BaseModel):
