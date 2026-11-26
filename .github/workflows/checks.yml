@@ -60,3 +60,5 @@ jobs:
       - run: python -m playwright install --with-deps chromium
       - name: Exercise the actual operator interface
         run: python tests/browser_smoke.py
+      - name: Exercise restricted company pilot UI
+        run: python tests/browser_pilot_smoke.py

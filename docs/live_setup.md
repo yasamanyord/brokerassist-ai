@@ -67,3 +67,7 @@ Free demo data may reset across deploys/restarts. A real production client syste
 ## Release evidence
 
 The standard CI checks remain network-free. Manual live validation is separately enabled by the operator; the actual live LLM and Zendesk probes have not yet been executed. The hosted-mode credential gate and OAuth transport are tested locally with synthetic and mocked fixtures.
+
+## Restricted company pilot
+
+The Render Blueprint is only the synthetic portfolio demo. For a dedicated company environment with named users, approved policy, signed relay and persistent storage, see [pilot deployment](pilot_deployment.md). Do not put company data or provider keys in the hosted synthetic demo.

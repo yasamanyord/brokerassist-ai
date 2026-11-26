@@ -1,0 +1,38 @@
+# Run behind your organization's private HTTPS reverse proxy.
+# Do not use the public demo blueprint for real company data.
+services:
+  brokerassist:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      BROKERASSIST_PILOT: "yes"
+      BROKERASSIST_CLIENT_ID: "${BROKERASSIST_CLIENT_ID:?set unique company ID}"
+      BROKERASSIST_PUBLIC_ORIGIN: "${BROKERASSIST_PUBLIC_ORIGIN:?set private HTTPS origin}"
+      BROKERASSIST_DB: /app/runtime/pilot.db
+      BROKERASSIST_PILOT_USERS_FILE: /run/client-config/users.json
+      BROKERASSIST_PILOT_KNOWLEDGE_FILE: /run/client-config/knowledge.json
+      BROKERASSIST_MODE: "${BROKERASSIST_MODE:-offline}"
+      BROKERASSIST_PILOT_LLM_APPROVED: "${BROKERASSIST_PILOT_LLM_APPROVED:-no}"
+      BROKERASSIST_DAILY_PROVIDER_CALLS: "${BROKERASSIST_DAILY_PROVIDER_CALLS:-0}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4.1-mini}"
+      BROKERASSIST_SIGNING_SECRET: "${BROKERASSIST_SIGNING_SECRET:-}"
+    volumes:
+      - pilot-data:/app/runtime
+      - ./client-config:/run/client-config:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3).read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+volumes:
+  pilot-data:

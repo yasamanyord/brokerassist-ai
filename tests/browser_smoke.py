@@ -13,7 +13,7 @@ with tempfile.TemporaryDirectory() as tmp:
             except Exception:time.sleep(.2)
         else:raise RuntimeError("Server failed to start")
         with sync_playwright() as p:
-            b=p.chromium.launch(headless=True)
+            b=p.chromium.launch(headless=True,executable_path=os.getenv("PLAYWRIGHT_CHROMIUM_EXECUTABLE") or None)
             page=b.new_page(viewport={"width":1440,"height":1080})
             errors=[]
             page.on("pageerror",lambda error:errors.append(str(error)))

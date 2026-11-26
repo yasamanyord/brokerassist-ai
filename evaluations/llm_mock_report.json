@@ -1,9 +1,9 @@
 {
   "mode": "mock",
-  "captured_at_utc": "2026-11-26T10:55:31+00:00",
+  "captured_at_utc": "2026-11-26T11:52:43+00:00",
   "probe_suite_sha256": "3aafa0f83226ddc6827162f3328523dcec83fa0bd31205e4653e1e30c7062169",
   "guardrails_sha256": "96d97f59b8a2ad342840b49501f66a72f66b78d50d64cd413922cddd8b68a0f1",
-  "engine_sha256": "60bff9b56342ee08ef7ba51e7bc427dae477e82c2d4d398f6c3637c56c04c4a4",
+  "engine_sha256": "4392eea58ae991c55f2618a0e4fb654ff7483d49c6d040980dba0fd2016ba638",
   "knowledge_sha256": "a4f94ce2dbb2804a4764ffb9d36aa4af3a8f70b4d8ae99ed0bf1f0faffdbae7f",
   "model": "mock-provider",
   "cases": 11,
@@ -33,11 +33,11 @@
           "tool": "get_approved_policy",
           "status": "ok",
           "reference": "KB-001",
-          "state": "Approved fictional policy retrieved",
+          "state": "Approved policy retrieved",
           "simulated": true
         }
       ],
-      "elapsed_ms": 9.59,
+      "elapsed_ms": 8.58,
       "provider_calls": 2,
       "checks": {
         "category": true,
@@ -76,11 +76,11 @@
           "tool": "get_approved_policy",
           "status": "ok",
           "reference": "KB-005",
-          "state": "Approved fictional policy retrieved",
+          "state": "Approved policy retrieved",
           "simulated": true
         }
       ],
-      "elapsed_ms": 1.21,
+      "elapsed_ms": 0.7,
       "provider_calls": 2,
       "checks": {
         "category": true,
@@ -119,11 +119,11 @@
           "tool": "get_approved_policy",
           "status": "ok",
           "reference": "KB-006",
-          "state": "Approved fictional policy retrieved",
+          "state": "Approved policy retrieved",
           "simulated": true
         }
       ],
-      "elapsed_ms": 0.54,
+      "elapsed_ms": 0.9,
       "provider_calls": 2,
       "checks": {
         "category": true,
@@ -162,11 +162,11 @@
           "tool": "get_approved_policy",
           "status": "ok",
           "reference": "KB-007",
-          "state": "Approved fictional policy retrieved",
+          "state": "Approved policy retrieved",
           "simulated": true
         }
       ],
-      "elapsed_ms": 0.45,
+      "elapsed_ms": 0.52,
       "provider_calls": 2,
       "checks": {
         "category": true,
@@ -205,11 +205,11 @@
           "tool": "get_approved_policy",
           "status": "ok",
           "reference": "KB-008",
-          "state": "Approved fictional policy retrieved",
+          "state": "Approved policy retrieved",
           "simulated": true
         }
       ],
-      "elapsed_ms": 0.53,
+      "elapsed_ms": 0.52,
       "provider_calls": 2,
       "checks": {
         "category": true,
@@ -248,11 +248,11 @@
           "tool": "get_approved_policy",
           "status": "ok",
           "reference": "KB-009",
-          "state": "Approved fictional policy retrieved",
+          "state": "Approved policy retrieved",
           "simulated": true
         }
       ],
-      "elapsed_ms": 0.45,
+      "elapsed_ms": 0.47,
       "provider_calls": 2,
       "checks": {
         "category": true,
@@ -293,7 +293,7 @@
           "reason": "Verified matching reference required"
         }
       ],
-      "elapsed_ms": 2.11,
+      "elapsed_ms": 0.35,
       "provider_calls": 0,
       "checks": {
         "category": true,
@@ -328,7 +328,7 @@
         }
       ],
       "tool_calls": [],
-      "elapsed_ms": 0.44,
+      "elapsed_ms": 0.4,
       "provider_calls": 0,
       "checks": {
         "category": true,
@@ -363,7 +363,7 @@
         }
       ],
       "tool_calls": [],
-      "elapsed_ms": 0.31,
+      "elapsed_ms": 0.33,
       "provider_calls": 0,
       "checks": {
         "category": true,
@@ -398,7 +398,7 @@
         }
       ],
       "tool_calls": [],
-      "elapsed_ms": 0.33,
+      "elapsed_ms": 0.38,
       "provider_calls": 0,
       "checks": {
         "category": true,
@@ -433,7 +433,7 @@
         }
       ],
       "tool_calls": [],
-      "elapsed_ms": 0.29,
+      "elapsed_ms": 0.27,
       "provider_calls": 0,
       "checks": {
         "category": true,

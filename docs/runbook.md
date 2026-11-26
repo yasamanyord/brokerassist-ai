@@ -30,3 +30,7 @@ The default database lives in runtime/brokerassist.db. Stop the server before ba
 
 ## Optional live service validation and restricted hosting
 Follow [the live setup guide](live_setup.md) for opt-in live LLM testing, read-only Zendesk OAuth and a password-protected offline portfolio deployment. Never expose the local unauthenticated mode.
+
+## Company pilot mode
+
+For named identities, client-specific policies, signed relay, persistent company database, backup/restore and ops handoff, follow [pilot deployment](pilot_deployment.md) and [client acceptance](pilot_acceptance.md). Do not expose or use the synthetic demo for company data.

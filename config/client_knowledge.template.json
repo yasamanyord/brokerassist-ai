@@ -1,0 +1,105 @@
+{
+  "client_id": "REPLACE_WITH_CLIENT_ID",
+  "approved": false,
+  "version": "",
+  "approved_by": "",
+  "approved_at": "",
+  "policies": [
+    {
+      "id": "KB-001",
+      "category": "MT5",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-002",
+      "category": "Deposit",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-003",
+      "category": "Withdrawal",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-004",
+      "category": "KYC",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-005",
+      "category": "Accounts",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-006",
+      "category": "Trading conditions",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-007",
+      "category": "Bonus",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-008",
+      "category": "Technical",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-009",
+      "category": "Partnerships",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-010",
+      "category": "Security",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-011",
+      "category": "Trading disputes",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    },
+    {
+      "id": "KB-012",
+      "category": "General",
+      "title": "",
+      "policy": "",
+      "reply": "",
+      "keywords": []
+    }
+  ]
+}

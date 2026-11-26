@@ -8,3 +8,9 @@ runtime/
 *.sqlite*
 .DS_Store
 test-results/
+client-config/
+pilot-data/
+backups/
+*.db-journal
+*.db-wal
+*.db-shm

@@ -2,7 +2,7 @@
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let tickets=[],selected=null,filter='All',query='',currentView='inbox';
-let detailToken=0,noticeTimer;
+let detailToken=0,noticeTimer,session={pilot:false,role:"operator"};
 async function api(path,options={}){
  const res=await fetch('/api'+path,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});
  if(!res.ok){const body=await res.json().catch(()=>({}));throw new Error(typeof body.detail==='string'?body.detail:'Request failed ('+res.status+')');}
@@ -27,7 +27,8 @@ function renderList(){
  document.querySelectorAll('[data-ticket]').forEach(btn=>btn.onclick=()=>{selected=btn.dataset.ticket;renderList();renderDetail().catch(e=>notice(e.message,true));});
 }
 function analysisHTML(t){
- const a=t.analysis,closed=['Approved','Escalated'].includes(t.status);
+ const a=t.analysis,closed=['Approved','Escalated'].includes(t.status),readOnly=session.role==='viewer';
+ if(!a&&readOnly)return '<div class="placeholder">Awaiting operator analysis.</div>';
  if(!a)return '<div class="placeholder"><div class="spark" style="margin:auto">✦</div><h3>Ready to analyze</h3><p>Retrieve relevant policy, identify risk and create a reviewable response draft.</p><button class="primary" id="analyze-btn">✦ Analyze ticket</button></div>';
  const refs=a.citations.map(c=>'<details class="source"><summary>'+esc(c.id)+' · '+esc(c.title)+'</summary><p>'+esc(c.excerpt)+'</p></details>').join('');
  const calls=a.tool_calls.map(c=>'<div class="source"><b>Tool: '+esc(c.tool)+'</b> '+statusBadge(c.status==='ok'?'Authorized':'Blocked')+'<p>'+esc(c.status==='ok'?c.reference+' · '+c.state+(c.simulated?' (demo data)':''):c.reason)+'</p></div>').join('');
@@ -35,8 +36,8 @@ function analysisHTML(t){
  const signals=(a.risk_signals||[]).map(r=>esc(r.code.replaceAll('_',' '))).join(' · ');
  return '<div class="analysis-grid"><div class="analysis-field"><span class="label">Category</span><b>'+esc(a.category)+'</b></div><div class="analysis-field"><span class="label">Priority</span><span class="badge '+esc(a.priority.toLowerCase())+'">'+esc(a.priority)+'</span></div><div class="analysis-field"><span class="label">Assigned team</span><b>'+esc(a.team)+'</b></div></div>'+
  '<div class="alert '+(a.mandatory_escalation?'':'safe')+'"><b>'+decision+'</b> — '+esc(a.reason)+(signals?'<br><span class="muted">Risk flags: '+signals+'</span>':'')+'</div><div class="sources"><span class="label">Retrieved evidence</span>'+refs+calls+'</div>'+
- '<div class="draft"><span class="label">'+(t.status==='Approved'?'Approved local draft':'Suggested response')+' · '+esc(a.mode)+'</span><textarea id="draft" aria-label="Suggested response" '+(closed?'readonly':'')+'>'+esc(t.final_reply||a.draft)+'</textarea></div>'+
- (closed?'<div class="alert safe">Finalized locally: '+esc(t.status)+'. No message was sent externally.</div>':
+ '<div class="draft"><span class="label">'+(t.status==='Approved'?'Approved local draft':'Suggested response')+' · '+esc(a.mode)+'</span><textarea id="draft" aria-label="Suggested response" '+(closed||readOnly?'readonly':'')+'>'+esc(t.final_reply||a.draft)+'</textarea></div>'+
+ (closed?'<div class="alert safe">Finalized locally: '+esc(t.status)+'. No message was sent externally.</div>':readOnly?'<div class="alert safe">Read-only viewer access.</div>':
  '<div class="actions"><button id="approve-btn" class="primary" '+(a.mandatory_escalation?'disabled title="Mandatory specialist escalation"':'')+'>✓ Approve local draft</button><button id="escalate-btn" class="danger-btn">↗ Escalate to '+esc(a.team)+'</button><button id="analyze-btn" class="secondary">↻ Re-analyze</button></div>');
 }
 async function renderDetail(){
@@ -46,10 +47,10 @@ async function renderDetail(){
  $('detail').innerHTML='<div class="ticket-top"><div><span class="ticket-id">'+esc(t.id)+' · '+esc(t.channel)+'</span><h2>'+esc(t.subject)+'</h2></div>'+statusBadge(t.status)+'</div><div class="customerline"><div class="avatar">'+esc(initials)+'</div><b>'+esc(t.customer)+'</b><span>·</span><span>'+esc(new Date(t.created_at).toLocaleString())+'</span></div><div class="message"><span class="label">Customer message</span><p>'+esc(t.message)+'</p></div><div class="ai-title"><div class="spark">✦</div><div><h3>Support copilot</h3><small>Policy-grounded assistance</small></div></div>'+analysisHTML(t)+'<div class="audit"><h3 style="font-size:13px;margin:0 0 8px">Audit history</h3><div id="audit-rows" class="muted">Loading…</div></div>';
  const bind=(id,fn)=>{const btn=$(id);if(btn)btn.onclick=async()=>{btn.disabled=true;const old=btn.textContent;btn.textContent='Working…';try{await fn()}catch(e){notice(e.message,true)}finally{if(btn.isConnected){btn.disabled=false;btn.textContent=old}}}};
  bind('analyze-btn',async()=>{await api('/tickets/'+t.id+'/analyze',{method:'POST'});await refresh();notice('Ticket analyzed. Review the retrieved policy and recommended action.')});
- bind('approve-btn',async()=>{await api('/tickets/'+t.id+'/decision',{method:'POST',body:JSON.stringify({action:'approve',reply:$('draft').value})});await refresh();notice('Draft approved locally. No external message sent.')});
- bind('escalate-btn',async()=>{await api('/tickets/'+t.id+'/decision',{method:'POST',body:JSON.stringify({action:'escalate'})});await refresh();notice('Ticket escalated internally to '+t.analysis.team+'.')});
+ bind('approve-btn',async()=>{await api('/tickets/'+t.id+'/decision',{method:'POST',body:JSON.stringify({action:'approve',reply:$('draft').value,analysis_revision:t.analysis_revision})});await refresh();notice('Draft approved locally. No external message sent.')});
+ bind('escalate-btn',async()=>{await api('/tickets/'+t.id+'/decision',{method:'POST',body:JSON.stringify({action:'escalate',analysis_revision:t.analysis_revision})});await refresh();notice('Ticket escalated internally to '+t.analysis.team+'.')});
  const audit=await api('/tickets/'+t.id+'/audit');
- if(token===detailToken&&$('audit-rows'))$('audit-rows').innerHTML=audit.length?audit.map(a=>'<div class="audit-row"><b>'+esc(a.action)+'</b> · '+esc(a.detail)+'<br>'+esc(new Date(a.created_at).toLocaleString())+'</div>').join(''):'<div class="audit-row">No actions recorded yet.</div>';
+ if(token===detailToken&&$('audit-rows'))$('audit-rows').innerHTML=audit.length?audit.map(a=>'<div class="audit-row"><b>'+esc(a.action)+'</b> · '+esc(a.detail)+'<br>'+esc(a.actor||'legacy-demo')+' · '+esc(new Date(a.created_at).toLocaleString())+'</div>').join(''):'<div class="audit-row">No actions recorded yet.</div>';
 }
 async function showView(view){
  currentView=view;document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!==view);
@@ -68,7 +69,7 @@ $('create-ticket').onclick=()=>$('ticket-dialog').showModal();
 $('close-dialog').onclick=()=>$('ticket-dialog').close();
 $('intake-form').onsubmit=async e=>{
  e.preventDefault();const button=e.target.querySelector('[type=submit]');button.disabled=true;
- try{const t=await api('/tickets',{method:'POST',body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});selected=t.id;filter='All';query='';$('search').value='';document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('selected',x.dataset.filter==='All'));$('ticket-dialog').close();e.target.reset();await refresh();notice('Synthetic ticket created.')}
+ try{const t=await api('/tickets',{method:'POST',body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});selected=t.id;filter='All';query='';$('search').value='';document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('selected',x.dataset.filter==='All'));$('ticket-dialog').close();e.target.reset();await refresh();notice(session.pilot?'Ticket received.':'Synthetic ticket created.')}
  catch(err){notice(err.message,true)}finally{button.disabled=false}
 };
-(async()=>{try{const health=await api('/health');$('mode').innerHTML='<span class="dot"></span>'+ (health.mode==='llm-enabled'?'LLM enabled':'Offline demo');await refresh(false)}catch(e){notice('Unable to load workspace: '+e.message,true)}})();
+(async()=>{try{const health=await api('/health');session=await api('/session');$('mode').innerHTML='<span class="dot"></span>'+ (session.pilot?'Restricted company pilot':health.mode==='llm-enabled'?'LLM enabled':'Offline demo');if(session.pilot){$('org-name').textContent=session.client;$('org-description').textContent='Dedicated company workspace';$('workspace-label').textContent='Restricted pilot · local approval';$('profile-name').textContent=session.name;$('profile-avatar').textContent=session.name.slice(0,2).toUpperCase();$('profile-role').textContent=session.role;$('policy-description').textContent='Client-approved policies used to ground response drafts.';$('intake-title').textContent='Receive a ticket';$('intake-note').textContent='Enter only company-authorized, minimum necessary data.';const customer=document.querySelector('[name=customer]');customer.defaultValue='';customer.value='';document.querySelector('[name=message]').placeholder='Enter an authorized support request';}if(session.role==='viewer')$('create-ticket').hidden=true;await refresh(false)}catch(e){notice('Unable to load workspace: '+e.message,true)}})();

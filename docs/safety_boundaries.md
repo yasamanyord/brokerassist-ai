@@ -1,6 +1,6 @@
 # Costly mistakes and explicit system boundaries
 
-BrokerAssist is an executable, local-first portfolio product. It is not a production brokerage, and it is intentionally incapable of sending customer messages or moving funds. Every account, transaction, ticket and policy is synthetic. The LLM provider and CRM integrations require separate authorized testing before live adoption.
+BrokerAssist is an executable, local-first portfolio product. It is not a production brokerage, and it is intentionally incapable of sending customer messages or moving funds. The demo uses synthetic accounts, transactions, tickets and policies. A separate opt-in company pilot has no simulated account or transaction data, begins empty and requires private approved knowledge and named credentials. The LLM provider and CRM integrations require separate authorized testing before live adoption.
 
 ## Threat model and enforcement
 
@@ -23,7 +23,18 @@ BrokerAssist is an executable, local-first portfolio product. It is not a produc
 - No tool exists to send a message, transfer funds, make trades, edit real balances, verify identities or reset credentials.
 - Decisions are enforced in backend code regardless of the UI. Rules have a version; existing open tickets must be re-analyzed when their saved guardrail version is stale. Historical finalized tickets are unchanged.
 
-The rule-based detector is deliberately conservative, English-focused and not exhaustive; it may over-escalate benign wording and fail to detect novel paraphrases, unsafe semantic statements or multilingual attacks. Even a candidate that passes every test must receive human review. Basic redaction is not comprehensive DLP. Authentication, access control, tenancy and native signed CRM webhooks remain required before operating on real records. Do not expose local mode. A separate restricted, password-protected hosted offline mode is available for synthetic portfolio reviewers only; see [live setup](live_setup.md).
+The rule-based detector is deliberately conservative, English-focused and not exhaustive; it may over-escalate benign wording and fail to detect novel paraphrases, unsafe semantic statements or multilingual attacks. Even a candidate that passes every test must receive human review. Basic redaction is not comprehensive DLP. The pilot implements named credentials, roles, dedicated company storage and a signed normalized relay endpoint, but native CRM verification, company infrastructure, privacy controls and acceptance remain required before handling real records. Do not expose local mode. A separate restricted, password-protected hosted offline mode is available for synthetic portfolio reviewers only; see [live setup](live_setup.md).
+
+## Additional pilot-specific controls
+
+- Authentication and role enforcement on every private route; admin-only operational counters; no viewer writes; user identity recorded in decision audit.
+- Dedicated owner-only database bound to a company; reject demo or other-client data; no seeds, no transaction tool.
+- Require approved named policy owner, version and stable schema; reject unsafe baseline copy; reject prior policy revisions and stale concurrent approval requests.
+- Signed inbound JSON events: raw-body HMAC, timestamp window, byte limit, idempotent retry, conflict rejection; no trust in caller-provided verification.
+- Durable daily provider request cap, offline default, explicit model authorization, consistent protected SQLite backup and restore tests.
+- Unknown/unsupported policy cases in pilot must escalate; only routine cases can be reviewed for local approval. Model/tool outputs and operator edits still need human factual review.
+
+These controls do not make the app enterprise SSO, a native CRM connector, a DLP system, a tamper-proof audit log, or a regulatory-compliant platform. See [pilot deployment](pilot_deployment.md) and [acceptance gates](pilot_acceptance.md).
 
 ## Measured release evidence
 

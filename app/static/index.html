@@ -5,14 +5,14 @@
 <div class="app">
 <aside class="sidebar">
  <div class="brand"><div class="logo">B<span>✦</span></div><div><strong>BrokerAssist</strong><small>AI WORKSPACE</small></div></div>
- <div class="organization"><div class="avatar">BA</div><div><b>Brokerage demo</b><small>Portfolio workspace</small></div><span>⌄</span></div>
+ <div class="organization"><div class="avatar">BA</div><div><b id="org-name">Brokerage demo</b><small id="org-description">Portfolio workspace</small></div><span>⌄</span></div>
  <div class="navlabel">WORKSPACE</div>
  <button class="nav active" data-view="inbox"><span>▤</span> Ticket inbox <i id="nav-count">8</i></button>
  <button class="nav" data-view="knowledge"><span>▣</span> Knowledge base</button>
  <button class="nav" data-view="analytics"><span>▥</span> Operations</button>
  <div class="navlabel" style="margin-top:30px">DEVELOPER</div>
  <a class="nav" href="/docs" target="_blank" rel="noopener"><span>⌘</span> API documentation <span>↗</span></a>
- <div class="sidebar-bottom"><div class="demo-label"><span class="dot"></span> Synthetic data only</div><div class="profile"><div class="avatar profile-avatar">YY</div><div><b>Yasaman Yord</b><small>Support operator</small></div></div></div>
+ <div class="sidebar-bottom"><div class="demo-label" id="workspace-label"><span class="dot"></span> Synthetic data only</div><div class="profile"><div class="avatar profile-avatar" id="profile-avatar">YY</div><div><b id="profile-name">Yasaman Yord</b><small id="profile-role">Support operator</small></div></div></div>
 </aside>
 <main>
  <header class="topbar"><div><span class="crumb">Workspace</span><span class="crumb"> / </span><b id="breadcrumb">Ticket inbox</b></div><span id="mode" class="mode"><span class="dot"></span> Offline demo</span></header>
@@ -25,10 +25,10 @@
     <section class="detail" id="detail"><div class="empty-state">Select a ticket to get started.</div></section>
   </div>
  </section>
- <section id="knowledge" class="view" hidden><div class="pagehead"><div><div class="eyebrow">RETRIEVAL & GROUNDING</div><h1>Knowledge base</h1><p>Fictional approved policies used to ground response drafts.</p></div></div><div id="policy-list" class="policy-grid"></div></section>
- <section id="analytics" class="view" hidden><div class="pagehead"><div><div class="eyebrow">OPERATIONS</div><h1>Workflow overview</h1><p>Live counts from the local database. No invented performance metrics.</p></div></div><div id="analytics-stats" class="stats"></div><div class="analytics-panel"><h2>Ticket distribution</h2><div id="bars"></div><p class="muted">Approvals and escalations represent local simulated workflow actions, not actual messages or brokerage transactions.</p></div></section>
+ <section id="knowledge" class="view" hidden><div class="pagehead"><div><div class="eyebrow">RETRIEVAL & GROUNDING</div><h1>Knowledge base</h1><p id="policy-description">Fictional approved policies used to ground response drafts.</p></div></div><div id="policy-list" class="policy-grid"></div></section>
+ <section id="analytics" class="view" hidden><div class="pagehead"><div><div class="eyebrow">OPERATIONS</div><h1>Workflow overview</h1><p>Live counts from the local database. No invented performance metrics.</p></div></div><div id="analytics-stats" class="stats"></div><div class="analytics-panel"><h2>Ticket distribution</h2><div id="bars"></div><p class="muted">Approvals and escalations are stored locally. No external message or brokerage transaction is performed.</p></div></section>
 </main>
 </div>
-<dialog id="ticket-dialog"><form id="intake-form"><div class="modal-header"><div><div class="eyebrow">INTAKE</div><h2>Create a test ticket</h2></div><button type="button" id="close-dialog" class="ghost">×</button></div><p class="muted">Use fictional information only.</p><label>Customer name<input name="customer" value="Demo Customer" required maxlength="120"/></label><label>Channel<select name="channel"><option>Web ticket</option><option>Email</option><option>Live chat</option><option>CRM</option></select></label><label>Subject<input name="subject" required maxlength="180" placeholder="e.g. Withdrawal pending"/></label><label>Message<textarea name="message" required rows="5" maxlength="5000" placeholder="Enter a synthetic customer request..."></textarea></label><button type="submit" class="primary">Create ticket</button></form></dialog>
+<dialog id="ticket-dialog"><form id="intake-form"><div class="modal-header"><div><div class="eyebrow">INTAKE</div><h2 id="intake-title">Create a test ticket</h2></div><button type="button" id="close-dialog" class="ghost">×</button></div><p class="muted" id="intake-note">Use fictional information only.</p><label>Customer name<input name="customer" value="Demo Customer" required maxlength="120"/></label><label>Channel<select name="channel"><option>Web ticket</option><option>Email</option><option>Live chat</option><option>CRM</option></select></label><label>Subject<input name="subject" required maxlength="180" placeholder="e.g. Withdrawal pending"/></label><label>Message<textarea name="message" required rows="5" maxlength="5000" placeholder="Enter a synthetic customer request..."></textarea></label><button type="submit" class="primary">Create ticket</button></form></dialog>
 <script src="/static/app.js" defer></script>
 </body></html>

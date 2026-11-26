@@ -1,5 +1,5 @@
 # BrokerAssist AI
-**A human-in-the-loop support operations copilot for a fictional brokerage**  
+**A human-in-the-loop support operations copilot with a synthetic demo and restricted company pilot mode**  
 Portfolio project for Yasaman Yord · Python · FastAPI · Retrieval · Tool calling · CRM workflows
 
 ## Problem
@@ -8,7 +8,7 @@ Brokerage support teams repeatedly answer questions about platform login, accoun
 ## Solution
 BrokerAssist is a local, end-to-end ticket workflow: an operator receives a synthetic ticket, retrieves a relevant approved knowledge record, runs bounded analysis, reviews the draft and either approves it locally or escalates it. The system records its evidence, routing, tool attempts and operator actions in SQLite.
 
-This is **a portfolio prototype, not a production financial system**. There are no real customers, live account records, funds, or outgoing messages. The fictional policy content is not STB guidance or financial advice. The work is inspired by brokerage support operations, not affiliated with STB or any other broker.
+**Two separate modes:** the portfolio demo uses fictional customers, policies and simulated transaction status; the opt-in company pilot starts empty, requires a dedicated company database, named credentials and explicitly approved private knowledge, and disables the simulated transaction tool. Both modes record local workflow decisions only; no external replies, trading, funds or account mutations are possible. The work is inspired by brokerage support operations, not affiliated with STB or any other broker. The pilot has not been deployed to a real company and is not a production financial system.
 
 ## What works
 - Responsive browser workspace: search/filter inbox, create a ticket, analyze, inspect sources, edit a draft, approve/escalate, audit trail, knowledge base and live operations counts.
@@ -19,7 +19,8 @@ This is **a portfolio prototype, not a production financial system**. There are 
 - Local CRM-compatible ticket ingestion, incoming webhook with shared-secret validation and event-ID deduplication; optional read-only Zendesk sandbox adapter.
 - Mandatory human approval for routine drafts and specialist escalation for sensitive cases.
 - SQLite persistence, FastAPI OpenAPI documentation, Docker configuration and CI workflow.
-- 50 synthetic golden cases, 50 automated tests, including mocked model tool calling, provider failure fallback and regression negative controls.
+- 50 synthetic golden cases, 76 automated tests (including 26 restricted-pilot tests), mocked model tool calling, provider failure fallback, concurrency, authorization and regression negative controls.
+- Restricted company pilot: separate named identities and roles; private approved policy revision; company-bound persistent database; HMAC-signed intake; stale-draft protection; immutable-through-the-API audit, provider request quota, and verified SQLite backup/restore CLI.
 - Versioned offline baseline, case-by-case release gate, an opt-in live LLM probe and an eleven-case mock provider probe.
 - Independent risk scanning for mixed-intent tickets; output validation and current-version server approval safeguards; 20 adversarial and routine-control safety evaluation cases.
 - Project documentation in `docs/`: scope, architecture, risk, runbook, release/operations guide and interview demo script.
@@ -52,6 +53,18 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 docker compose up --build
 ```
 Docker configuration provided; image build was not tested in the development workspace. Compose binds to loopback and persists the demo database.
+
+## Beyond a demo: restricted company pilot
+
+The pilot is working software designed for a small, controlled internal staging deployment. It fails startup if private approved knowledge, an individual user roster, an HTTPS origin or a dedicated database are missing; it cannot adopt demo or another company's database. It defaults to offline and requires explicit client authorization to enable the model. No real transaction-provider tool exists.
+
+- [Company pilot deployment and operator runbook](docs/pilot_deployment.md)
+- [Client discovery, acceptance gates and production-readiness checklist](docs/pilot_acceptance.md)
+- [Unapproved private knowledge template](config/client_knowledge.template.json)
+- [Pilot access, reliability and recovery tests](tests/test_pilot.py)
+- [Private deployment Compose configuration](docker-compose.pilot.yml)
+
+The existing public Render Blueprint remains an offline synthetic demo only. Do not use it for real client data. Client-specific approvals, independent evals, actual provider/CRM testing and security/operational acceptance remain required.
 
 ## Demo walkthrough
 1. Select **BA-1042 – Deposit not credited**. Analyze it. The current simulated state is returned by the authorized tool; approval is blocked. Escalate to Finance.
@@ -108,7 +121,7 @@ curl -X POST http://127.0.0.1:8000/api/webhooks/ticket \
   -H "X-Webhook-Secret: YOUR_WEBHOOK_SECRET" \
   -d '{"event_id":"demo-001","customer":"Demo User","channel":"CRM","subject":"MT5 login","message":"Invalid account on MT5."}'
 ```
-Repeat the event ID to check deduplication. The webhook creates an unverified ticket; analysis is triggered by the operator. A production adapter would verify source-native signing, timestamps and replay rules, enqueue work, and authenticate the operator.
+Repeat the event ID to check deduplication. The webhook creates an unverified ticket; analysis is triggered by the operator. The separate pilot accepts HMAC-signed, timestamped, idempotent events from an approved relay and authenticates operators; native source verification and queueing still require client-specific integration.
 
 For an actual Zendesk **synthetic sandbox** read-only import, set `ALLOW_ZENDESK_SANDBOX=yes`, `ZENDESK_SUBDOMAIN`, `ZENDESK_CLIENT_ID`, and `ZENDESK_CLIENT_SECRET` for a read-only OAuth client, then run:
 ```bash
@@ -128,7 +141,8 @@ Results (offline synthetic dataset; generated in this build):
 
 | Metric | Result |
 |---|---:|
-| Automated API, integration, regression and hosted-mode tests | 50/50 |
+| Automated unit, integration, regression, hosted and pilot-mode tests | 76/76 |
+| New dedicated pilot tests (included in 76) | 26/26 |
 | Adversarial and routine-control safety cases | 20/20 |
 | Versioned regression gate | PASS (50/50, no regressions) |
 | Mock LLM contract probe | 11/11 |
@@ -153,8 +167,8 @@ This repository includes an executable release gate, not only a notebook or a te
 
 Measured results: unchanged synthetic baseline vs candidate, 50/50 cases passed both and no individual check regressed. The 11-case mocked tool-call probe passed; no live provider test was executed. A passing CI run is not proof of production reliability or one year of LLM work.
 
-Browser source was served through FastAPI and JavaScript passed syntax checking. The initial development workspace lacked a working browser executable. The GitHub Actions workflow now includes a real Chromium/Playwright browser smoke job; see the published Actions run for its verified status. A reproducible Playwright smoke script is provided in `tests/browser_smoke.py`.
-Run it locally after installing `playwright` and its Chromium browser: `python -m pip install playwright`, `python -m playwright install chromium`, `python tests/browser_smoke.py`.
+Browser source was served through FastAPI and JavaScript passed syntax checking. The GitHub Actions workflow includes Chromium/Playwright browser smoke jobs for both the synthetic demo and dedicated pilot. See the latest Actions run for the verified status. Reproducible scripts are provided in `tests/browser_smoke.py` and `tests/browser_pilot_smoke.py`.
+Run them locally after installing `playwright` and its Chromium browser: `python -m pip install playwright`, `python -m playwright install chromium`, `python tests/browser_smoke.py`, and `python tests/browser_pilot_smoke.py`.
 
 ## Explicit safety boundaries
 
@@ -166,7 +180,10 @@ The backend independently detects sensitive intents even when a routine request 
 | GET | /api/health | Process status and model mode |
 | GET | /api/tickets | Ticket inbox |
 | POST | /api/tickets | Manual synthetic intake |
-| POST | /api/webhooks/ticket | Deduplicated inbound CRM event |
+| POST | /api/webhooks/ticket | Demo-only shared-secret intake |
+| POST | /api/webhooks/signed | Pilot-only HMAC signed relay intake |
+| GET | /api/session | Current deployment and operator identity |
+| GET | /api/ops | Admin-only pilot operational counters and policy revision |
 | GET | /api/tickets/{id} | Ticket details |
 | POST | /api/tickets/{id}/analyze | Analyze open ticket |
 | POST | /api/tickets/{id}/decision | Local approval or escalation |
@@ -196,11 +213,11 @@ run_demo.bat           Windows quick start
 - Pattern-based input/output guardrails are not complete semantic or multilingual safety checks; a human must review every approved response.
 - Local mode is single-user and unauthenticated; restricted hosted synthetic mode requires a shared credential and HTTPS origin, guards JSON writes, and disables live keys/webhooks. It is not production-grade authentication/authorization, multi-tenancy, full CSRF protection, TLS termination, native signed webhooks, rate limiting or RBAC.
 - English-focused lexical retrieval; not embeddings or multilingual semantics. Rules are not complete and multi-intent classification can miss secondary issues. The LLM draft needs human factual and policy review.
-- SQLite is fine for the demo; production client deployment needs a migration plan, managed DB, backups, queue, observability, permissions and data retention controls.
-- Basic redaction is not complete PII detection. Use only synthetic data.
+- SQLite with consistent backup/restore supports a small single-node pilot. Production scale needs validated capacity, managed storage/queue as appropriate, monitoring, retention, encryption and recovery objectives.
+- Basic redaction is not complete PII detection. Use only synthetic data until the company approves its data lifecycle and security controls; do not enable LLM without explicit data processing approval.
 - No real email sending, live ticket write-back, account updates, identity verification or transaction action.
-- API and webhook ingestion are demonstrated. Production CRM adapter must implement source-specific signing, synchronization, retries, and tested credentials.
-- No production deployment or live LLM/Zendesk test has been performed.
+- API and webhook ingestion are demonstrated. Pilot signed relay accepts normalized events; native CRM verification, synchronization, retries, and authorized live credential validation remain client-specific.
+- No production deployment or live LLM/Zendesk test has been performed. Client acceptance, independent evals, TLS/proxy setup, rate limiting, SSO/MFA if required, load and vulnerability review remain release gates; see the pilot acceptance checklist.
 
 **Before publishing to GitHub:** review this README, personalize the portfolio description, run tests on your device, replace synthetic rules only with material you're authorized to share, and do not claim production outcomes or customer results. The included code and tests are a starting point to understand and extend, not a claim that you built it independently.
 

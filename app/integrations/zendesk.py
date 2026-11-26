@@ -4,7 +4,7 @@ Run: python -m app.integrations.zendesk TICKET_ID
 Use a tickets:read OAuth client in a sandbox you control. No write calls.
 """
 import base64, json, os, re, sys, urllib.request
-from app import store
+from app import store, pilot
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     """Do not forward authorization to a redirected destination."""
@@ -54,6 +54,7 @@ def normalize(ticket: dict) -> dict:
             "event_id":"zendesk-ticket-"+str(ticket["id"])}
 
 def ingest(ticket_id:int):
+    if pilot.enabled():raise RuntimeError("Sandbox importer cannot access a company pilot; use approved signed relay")
     store.initialize()
     return store.intake(**normalize(fetch_ticket(ticket_id)))
 
