@@ -25,6 +25,10 @@ with tempfile.TemporaryDirectory() as tmp:
             
             page.get_by_role("button",name="Escalate to Finance").click()
             page.get_by_text("Finalized locally: Escalated",exact=False).wait_for()
+            packet=page.get_by_role("textbox",name="Specialist handoff")
+            packet.wait_for()
+            assert "Recommended team: Finance" in packet.input_value()
+            assert "Not sent to a specialist" in packet.input_value()
             page.locator('[data-ticket="BA-1041"]').click()
             page.get_by_role("button",name="Analyze ticket").click()
             page.get_by_text("Operator review required",exact=False).wait_for()

@@ -8,7 +8,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ValidationError, ConfigDict
 from starlette.concurrency import run_in_threadpool
-from . import store, hosted, pilot, engine
+from . import store, hosted, pilot, engine, handoff
+from .request_limits import WriteBodyLimit
 from .engine import analyze, POLICIES, ROOT
 
 @asynccontextmanager
@@ -27,6 +28,7 @@ async def lifespan(app):
 app=FastAPI(title="BrokerAssist AI",version="2.0.0",description="Synthetic demo or restricted company pilot; no automated customer actions.",lifespan=lifespan)
 app.middleware("http")(hosted.hosted_access)
 app.middleware("http")(pilot.access)
+app.add_middleware(WriteBodyLimit)
 app.mount("/static",StaticFiles(directory=ROOT/"app/static"),name="static")
 
 @app.exception_handler(RequestValidationError)
@@ -82,6 +84,14 @@ def ticket(ticket_id:str): return required_ticket(ticket_id)
 
 @app.get("/api/tickets/{ticket_id}/audit")
 def audit(ticket_id:str): required_ticket(ticket_id); return store.history(ticket_id)
+
+@app.get("/api/tickets/{ticket_id}/handoff")
+def specialist_handoff(ticket_id: str):
+    ticket = required_ticket(ticket_id)
+    try:
+        return handoff.packet(ticket, store.history(ticket_id))
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from None
 
 @app.post("/api/tickets",status_code=201)
 def intake(payload:Intake,request:Request):

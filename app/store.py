@@ -142,11 +142,19 @@ def reserve_provider_request():
         return True
 
 def metrics():
-    rows=tickets()
-    return {"total":len(rows),"new":sum(t["status"]=="New" for t in rows),
-            "review":sum(t["status"]=="In review" for t in rows),"approved":sum(t["status"]=="Approved" for t in rows),
-            "escalated":sum(t["status"]=="Escalated" for t in rows),"analyzed":sum(bool(t["analysis"]) for t in rows)}
-
+    # Aggregate in SQLite; do not deserialize every ticket or read private
+    # message/draft text just to render operational counts.
+    with connect() as c:
+        row = c.execute("""
+            SELECT COUNT(*) AS total,
+                   COUNT(CASE WHEN status='New' THEN 1 END) AS new,
+                   COUNT(CASE WHEN status='In review' THEN 1 END) AS review,
+                   COUNT(CASE WHEN status='Approved' THEN 1 END) AS approved,
+                   COUNT(CASE WHEN status='Escalated' THEN 1 END) AS escalated,
+                   COUNT(analysis) AS analyzed
+            FROM tickets
+        """).fetchone()
+        return dict(row)
 def ops():
     with connect() as c:
         row=c.execute("SELECT calls FROM provider_usage WHERE day=?",(now()[:10],)).fetchone()

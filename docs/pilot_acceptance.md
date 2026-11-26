@@ -22,9 +22,9 @@ Assumption: one company, small controlled group of trained operators, HTTPS behi
 | Working software | Python/FastAPI + JS UI, SQLite, local intake/analysis/review | Exercise staging with actual workflow owners |
 | Retrieval + tools | Bounded lexical retrieval; scoped optional model tool calling; no sensitive model runs; no live transaction access | Client corpus, independent grounding review and live-model evaluation approved |
 | Integration | HMAC-signed normalized intake, replay window, idempotency/conflict protection; synthetic OAuth CRM sandbox importer | Authorized real CRM relay, native event validation, retries and end-to-end test |
-| Security | Individual scrypt credentials, admin/operator/viewer roles, dedicated client store, origin/JSON checks, stale revision protection, named audit | Private TLS proxy/rate limits, threat review, real access revocation and privacy approval |
+| Security | Individual scrypt credentials, admin/operator/viewer roles, dedicated client store, origin/JSON checks, stale revision protection, named audit, 64 KiB write-body cap (16 KiB signed intake) | Private TLS proxy/rate limits, threat review, real access revocation and privacy approval |
 | Release quality | Original 50 golden cases, 20 safety cases, 11 mocked provider scenarios; separate pilot integration/concurrency/recovery tests | Independent client evaluation; live sandbox and performance/abuse tests |
-| Operations | Admin quota/blocked-decision metrics, consistent backup/restore CLI, deployment/runbook and local-only decisions | Monitoring alerts, retention policy, operator training, restore drill, rollback plan |
+| Operations | Admin quota/blocked-decision metrics, consistent backup/restore CLI, SQL aggregate counts, structured local-only handoff, deployment/runbook | Monitoring alerts, retention policy, operator training, restore drill, rollback plan |
 | Scalability | Single-company, single-node pilot | Load/soak testing, capacity planning, managed DB/queue/SSO if needed |
 | Proof | Reproducible tests and CI evidence; public repository | Client pilot outcomes and production experience have not been demonstrated |
 

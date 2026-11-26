@@ -67,6 +67,18 @@ class PilotTests(unittest.TestCase):
             self.assertEqual([r["action"] for r in rows],["approved","analyzed","received"])
             self.assertEqual({r["actor"] for r in rows},{"bob"})
 
+    def test_handoff_protected_and_named(self):
+        with TestClient(app) as c:
+            t=self.analyzed(c,{**DATA,"subject":"Withdrawal","message":"Could you check my withdrawal?"})
+            self.assertEqual(self.decision(c,t,"escalate").status_code,200)
+            path="/api/tickets/"+t["id"]+"/handoff"
+            self.assertEqual(c.get(path).status_code,401)
+            response=c.get(path,headers=self.viewer)
+            self.assertEqual(response.status_code,200)
+            self.assertEqual(response.json()["recorded_by"],"bob")
+            self.assertEqual(response.json()["delivery_status"],"local_only_not_sent")
+            self.assertEqual(response.json()["tool_attempts"][0]["status"],"blocked")
+
     def test_origin_and_content_type(self):
         with TestClient(app) as c:
             self.assertEqual(c.post("/api/tickets",json=DATA,headers={**self.operator,"Origin":"https://evil.example"}).status_code,403)
