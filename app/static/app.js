@@ -10,7 +10,7 @@ async function api(path,options={}){
 }
 function statusBadge(status){return '<span class="badge '+({'In review':'review','Escalated':'escalated','Approved':'approved'}[status]||'')+'">'+esc(status)+'</span>'}
 function notice(message,error=false){clearTimeout(noticeTimer);$('notice').textContent=message;$('notice').className=error?'error':'';$('notice').hidden=false;noticeTimer=setTimeout(()=>$('notice').hidden=true,5000)}
-function statsHTML(m){return [['Total tickets',m.total,'▤','All incoming requests'],['In review',m.review,'✦','Awaiting operator action'],['Approved',m.approved,'✓','Local approval only'],['Escalated',m.escalated,'↗','Routed to specialists']].map(([label,val,icon,caption])=>'<div class="stat"><span class="stat-icon">'+icon+'</span><label>'+label+'</label><div class="value">'+val+'</div><small>'+caption+'</small></div>').join('')}
+function statsHTML(m){return [['Total tickets',m.total,'▤','All incoming requests'],['In review',m.review,'✦','Awaiting operator action'],['Approved',m.approved,'✓','Local approval only'],['Escalated',m.escalated,'↗','Local escalation records']].map(([label,val,icon,caption])=>'<div class="stat"><span class="stat-icon">'+icon+'</span><label>'+label+'</label><div class="value">'+val+'</div><small>'+caption+'</small></div>').join('')}
 async function refresh(keep=true){
  tickets=await api('/tickets');
  const m=await api('/metrics');
@@ -48,7 +48,28 @@ async function renderDetail(){
  const bind=(id,fn)=>{const btn=$(id);if(btn)btn.onclick=async()=>{btn.disabled=true;const old=btn.textContent;btn.textContent='Working…';try{await fn()}catch(e){notice(e.message,true)}finally{if(btn.isConnected){btn.disabled=false;btn.textContent=old}}}};
  bind('analyze-btn',async()=>{await api('/tickets/'+t.id+'/analyze',{method:'POST'});await refresh();notice('Ticket analyzed. Review the retrieved policy and recommended action.')});
  bind('approve-btn',async()=>{await api('/tickets/'+t.id+'/decision',{method:'POST',body:JSON.stringify({action:'approve',reply:$('draft').value,analysis_revision:t.analysis_revision})});await refresh();notice('Draft approved locally. No external message sent.')});
- bind('escalate-btn',async()=>{await api('/tickets/'+t.id+'/decision',{method:'POST',body:JSON.stringify({action:'escalate',analysis_revision:t.analysis_revision})});await refresh();notice('Ticket escalated internally to '+t.analysis.team+'.')});
+ bind('escalate-btn',async()=>{await api('/tickets/'+t.id+'/decision',{method:'POST',body:JSON.stringify({action:'escalate',analysis_revision:t.analysis_revision})});await refresh();notice('Local escalation recorded for '+t.analysis.team+'. No message was sent.')});
+ if(t.status==='Escalated'){
+  const h=await api('/tickets/'+t.id+'/handoff');
+  if(token===detailToken){
+   const lines=[
+    'Ticket: '+h.ticket_id,
+    'Issue: '+h.issue,
+    'Impact: '+h.customer_impact,
+    'Priority: '+h.priority+' · Recommended team: '+h.recommended_team,
+    'Reason: '+h.reason,
+    'Evidence: '+h.policy_ids.join(', '),
+    'Risk flags: '+(h.risk_flags.join(', ')||'None detected'),
+    'Tool attempts: '+(h.tool_attempts.map(x=>x.tool+' — '+x.status+(x.simulated?' (simulation)':'')).join(', ')||'None'),
+    'Next step: '+h.next_step,
+    'Recorded by: '+h.recorded_by+' · '+h.recorded_at,
+    'Delivery: Local record only. Not sent to a specialist.'
+   ];
+   const section=document.createElement('div');section.className='draft';
+   section.innerHTML='<span class="label">Specialist handoff · local only</span><textarea aria-label="Specialist handoff" readonly rows="10">'+esc(lines.join('\n'))+'</textarea>';
+   $('audit-rows').parentElement.before(section);
+  }
+ }
  const audit=await api('/tickets/'+t.id+'/audit');
  if(token===detailToken&&$('audit-rows'))$('audit-rows').innerHTML=audit.length?audit.map(a=>'<div class="audit-row"><b>'+esc(a.action)+'</b> · '+esc(a.detail)+'<br>'+esc(a.actor||'legacy-demo')+' · '+esc(new Date(a.created_at).toLocaleString())+'</div>').join(''):'<div class="audit-row">No actions recorded yet.</div>';
 }
