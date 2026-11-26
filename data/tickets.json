@@ -1,0 +1,10 @@
+[
+ {"id":"BA-1042","customer":"Alex Morgan","channel":"Email","subject":"Deposit not credited","message":"Hi, I deposited 200 USD yesterday but my balance still hasn't changed. My reference is TX-2001. Can you check?","created_at":"2026-11-26T09:12:00Z","verified":true,"transaction_ref":"TX-2001"},
+ {"id":"BA-1041","customer":"Sam Rivera","channel":"Live chat","subject":"MT5 invalid account","message":"I keep receiving Invalid Account when trying to login to MT5. What should I do?","created_at":"2026-11-26T08:54:00Z"},
+ {"id":"BA-1040","customer":"Jamie Chen","channel":"Web ticket","subject":"KYC rejected","message":"My proof of address was rejected during KYC verification. Can I send my passport here?","created_at":"2026-11-26T08:31:00Z"},
+ {"id":"BA-1039","customer":"Taylor Adams","channel":"Email","subject":"Withdrawal pending","message":"My withdrawal has been pending since yesterday. Can you guarantee I receive it today?","created_at":"2026-11-26T08:10:00Z"},
+ {"id":"BA-1038","customer":"Casey Wells","channel":"Live chat","subject":"Demo or live account","message":"What's the difference between a demo account and a live account?","created_at":"2026-11-26T07:43:00Z"},
+ {"id":"BA-1037","customer":"Jordan Blake","channel":"Web ticket","subject":"Possible account compromise","message":"I think someone hacked my account. There are unauthorized activities!","created_at":"2026-11-26T07:25:00Z"},
+ {"id":"BA-1036","customer":"Avery Patel","channel":"Email","subject":"Understanding leverage","message":"What does leverage and margin mean?","created_at":"2026-11-26T07:04:00Z"},
+ {"id":"BA-1035","customer":"Robin Lee","channel":"Web ticket","subject":"Campaign terms","message":"Am I eligible for the bonus promotion this week?","created_at":"2026-11-26T06:40:00Z"}
+]

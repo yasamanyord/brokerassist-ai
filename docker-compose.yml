@@ -1,0 +1,12 @@
+services:
+  brokerassist:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      BROKERASSIST_MODE: offline
+      BROKERASSIST_DB: /app/runtime/brokerassist.db
+    volumes:
+      - brokerassist-data:/app/runtime
+volumes:
+  brokerassist-data:
