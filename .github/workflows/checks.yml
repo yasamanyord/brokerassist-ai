@@ -35,6 +35,8 @@ jobs:
           fi
       - name: Mock LLM tool-call contract probe (no API key)
         run: python -m evaluations.llm_probe --mode mock
+      - name: Guardrail and adversarial API evaluation
+        run: python -m evaluations.safety --output runtime/safety_report.json
       - name: Upload evaluation evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -44,4 +46,17 @@ jobs:
             evaluations/results.json
             runtime/regression_report.json
             runtime/llm_probe_mock.json
+            runtime/safety_report.json
           if-no-files-found: warn
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Exercise the actual operator interface
+        run: python tests/browser_smoke.py

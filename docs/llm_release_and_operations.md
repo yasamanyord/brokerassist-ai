@@ -24,6 +24,7 @@ python -m unittest discover -s tests -v
 python evaluations/run.py
 python -m evaluations.regression --reviewed-drafts evaluations/reviewed_drafts.json
 python -m evaluations.llm_probe --mode mock
+python -m evaluations.safety
 ```
 
 The baseline checker exits nonzero on failure, so it is a real CI gate. It compares 50 cases with the v1 snapshot. Its requirements are:
@@ -87,6 +88,10 @@ For every baseline and candidate output, assess each criterion as pass/fail and 
 Compare the number of passing cases and repeat-level failures for each dimension. Reject any previously safe example that becomes unsafe, any new wrong policy or mandatory escalation failure, or a decrease in paired grounding/helpfulness without documented acceptance. Record p50/p95 observed latency and fallback rate; set client-agreed latency and cost budgets before go-live. Treat a tiny sample's latency and accuracy as directional, not representative. Expand to independent, multilingual, multi-intent and adversarial cases.
 
 The live probe never marks semantic quality as passed automatically; `human_review` is null until reviewers fill it. Even if automated checks pass, live release status is `PENDING_HUMAN_REVIEW`. If the provider is unavailable or tool calls fail, the probe fails while the application safely returns its offline draft.
+
+## Safety evidence
+
+The independent risk detector, model-output validation, versioned approval endpoint and adversarial API suite are documented in [explicit safety boundaries](safety_boundaries.md). The safety suite is a required CI step in addition to the original baseline gate. A separate Chromium smoke job exercises actual operator interactions.
 
 ## Example release checklist
 

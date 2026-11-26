@@ -4,7 +4,8 @@ import json, os, sqlite3, uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from contextlib import contextmanager
-from .engine import ROOT, redact
+from .engine import ROOT, redact, analyze
+from .guardrails import VERSION as GUARDRAIL_VERSION, unsafe_draft_reasons
 
 def now(): return datetime.now(timezone.utc).isoformat(timespec="seconds")
 def db_path(): return Path(os.getenv("BROKERASSIST_DB", str(ROOT/"runtime"/"brokerassist.db")))
@@ -72,20 +73,39 @@ def record_analysis(ticket_id, result):
         audit(c,ticket_id,"analyzed",result["category"]+" • "+result["decision"]+" • "+result["mode"])
     return get(ticket_id)
 def decide(ticket_id,action,reply=None):
+    denial=None
     with connect() as c:
         c.execute("BEGIN IMMEDIATE")
         row=deserialize(c.execute("SELECT * FROM tickets WHERE id=?",(ticket_id,)).fetchone())
         if not row: raise KeyError(ticket_id)
-        if row["status"] != "In review" or not row["analysis"]: raise ValueError("Analyze an open ticket before taking action")
-        if action=="approve" and row["analysis"]["mandatory_escalation"]: raise ValueError("Specialist escalation required; approval blocked")
-        if action=="approve":
-            status="Approved"; final=redact((reply or row["analysis"]["draft"]).strip())
-            if not final: raise ValueError("Response cannot be empty")
+        if row["status"] != "In review" or not row["analysis"]:
+            denial="Analyze an open ticket before taking action"
+        elif action=="approve":
+            # Re-evaluate input using the current deterministic safety rules.
+            # A previously saved or outdated analysis cannot bypass new boundaries.
+            current=analyze(row,allow_llm=False)
+            if row["analysis"]["mandatory_escalation"] or current["mandatory_escalation"]:
+                denial="Specialist escalation required; approval blocked"
+            elif row["analysis"].get("guardrail_version") != GUARDRAIL_VERSION:
+                denial="Analysis is outdated; re-analyze using the current safety rules"
+            else:
+                final=(row["analysis"]["draft"] if reply is None else reply).strip()
+                if not final:
+                    denial="Response cannot be empty"
+                elif unsafe_draft_reasons(final):
+                    denial="Draft violates the safety boundary; edit or escalate"
+                else:
+                    final=redact(final)
+        if denial:
+            # Persist a denial without storing the rejected draft itself.
+            audit(c,ticket_id,"decision_blocked",denial)
+        elif action=="approve":
+            c.execute("UPDATE tickets SET status='Approved',final_reply=? WHERE id=?",(final,ticket_id))
             audit(c,ticket_id,"approved","Operator approved local draft; nothing sent externally.")
         else:
-            status="Escalated"; final=None
+            c.execute("UPDATE tickets SET status='Escalated',final_reply=NULL WHERE id=?",(ticket_id,))
             audit(c,ticket_id,"escalated","Assigned internally to "+row["analysis"]["team"]+"; no external action.")
-        c.execute("UPDATE tickets SET status=?,final_reply=? WHERE id=?",(status,final,ticket_id))
+    if denial: raise ValueError(denial)
     return get(ticket_id)
 
 def metrics():

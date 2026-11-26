@@ -14,7 +14,7 @@ async def lifespan(app):
     store.initialize()
     yield
 
-app=FastAPI(title="BrokerAssist AI",version="1.0.0",description="Local synthetic support portfolio demo; no live customer actions.",lifespan=lifespan)
+app=FastAPI(title="BrokerAssist AI",version="1.2.0",description="Local synthetic support portfolio demo; no live customer actions.",lifespan=lifespan)
 app.mount("/static",StaticFiles(directory=ROOT/"app/static"),name="static")
 
 class Intake(BaseModel):

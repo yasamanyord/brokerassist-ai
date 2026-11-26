@@ -19,8 +19,9 @@ This is **a portfolio prototype, not a production financial system**. There are 
 - Local CRM-compatible ticket ingestion, incoming webhook with shared-secret validation and event-ID deduplication; optional read-only Zendesk sandbox adapter.
 - Mandatory human approval for routine drafts and specialist escalation for sensitive cases.
 - SQLite persistence, FastAPI OpenAPI documentation, Docker configuration and CI workflow.
-- 50 synthetic golden cases, 33 automated tests, including mocked model tool calling, provider failure fallback and regression negative controls.
+- 50 synthetic golden cases, 42 automated tests, including mocked model tool calling, provider failure fallback and regression negative controls.
 - Versioned offline baseline, case-by-case release gate, an opt-in live LLM probe and an eleven-case mock provider probe.
+- Independent risk scanning for mixed-intent tickets; output validation and current-version server approval safeguards; 20 adversarial and routine-control safety evaluation cases.
 - Project documentation in `docs/`: scope, architecture, risk, runbook, release/operations guide and interview demo script.
 
 ## Quick start (Windows)
@@ -121,12 +122,14 @@ python -m unittest discover -s tests -v
 python evaluations/run.py
 python -m evaluations.regression --reviewed-drafts evaluations/reviewed_drafts.json
 python -m evaluations.llm_probe --mode mock
+python -m evaluations.safety
 ```
 Results (offline synthetic dataset; generated in this build):
 
 | Metric | Result |
 |---|---:|
-| Automated API, engine and regression tests | 33/33 |
+| Automated API, engine, regression and guardrail tests | 42/42 |
+| Adversarial and routine-control safety cases | 20/20 |
 | Versioned regression gate | PASS (50/50, no regressions) |
 | Mock LLM contract probe | 11/11 |
 | Golden cases passing all assertions | 50/50 |
@@ -150,8 +153,12 @@ This repository includes an executable release gate, not only a notebook or a te
 
 Measured results: unchanged synthetic baseline vs candidate, 50/50 cases passed both and no individual check regressed. The 11-case mocked tool-call probe passed; no live provider test was executed. A passing CI run is not proof of production reliability or one year of LLM work.
 
-Browser source was served through FastAPI and JavaScript passed syntax checking. Complete real-browser visual and interaction testing was blocked by a missing working browser executable in the development workspace. A reproducible optional Playwright smoke script is provided in `tests/browser_smoke.py`.
+Browser source was served through FastAPI and JavaScript passed syntax checking. The initial development workspace lacked a working browser executable. The GitHub Actions workflow now includes a real Chromium/Playwright browser smoke job; see the published Actions run for its verified status. A reproducible Playwright smoke script is provided in `tests/browser_smoke.py`.
 Run it locally after installing `playwright` and its Chromium browser: `python -m pip install playwright`, `python -m playwright install chromium`, `python tests/browser_smoke.py`.
+
+## Explicit safety boundaries
+
+The backend independently detects sensitive intents even when a routine request dominates retrieval. Known unsafe generated drafts fall back to approved local templates; unsafe operator edits are blocked and audited. Approval re-checks current risk rules and rejects stale analysis. No external sends or financial mutations exist. See [safety boundaries and threat model](docs/safety_boundaries.md) and [measured safety evaluation](evaluations/safety_report.json). These curated tests demonstrate specific controls, not complete safety or production readiness.
 
 ## API summary
 | Method | Endpoint | Purpose |
@@ -182,6 +189,7 @@ run_demo.bat           Windows quick start
 ```
 
 ## Known limitations and next milestones
+- Pattern-based input/output guardrails are not complete semantic or multilingual safety checks; a human must review every approved response.
 - Single-user, localhost only. No authentication, production-grade authorization, multi-tenancy, CSRF protection, TLS termination, native signed webhooks, rate limits or RBAC.
 - English-focused lexical retrieval; not embeddings or multilingual semantics. Rules are not complete and multi-intent classification can miss secondary issues. The LLM draft needs human factual and policy review.
 - SQLite is fine for the demo; production client deployment needs a migration plan, managed DB, backups, queue, observability, permissions and data retention controls.

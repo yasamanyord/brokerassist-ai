@@ -3,6 +3,7 @@
 ## Components
 - app/main.py: FastAPI routes, validation, same-origin frontend, webhook secret.
 - app/store.py: SQLite schema, seeded tickets, atomic state transitions and audit records.
+- app/guardrails.py: independent sensitive-intent scanning, normalized injection patterns, draft safety checks and versioned rules.
 - app/engine.py: local lexical retrieval, fixed routes, injection patterns, redaction, simulated tool, optional model call.
 - app/integrations/zendesk.py: optional read-only sandbox import.
 - app/static/: HTML/CSS/JS, no external scripts, escaping of all interpolated text.
@@ -13,7 +14,7 @@
 Incoming text -> basic redaction -> store -> retrieval and risk rules -> authorized read-only tool if applicable -> draft + source IDs -> operator review -> local decision and audit.
 
 ## State machine
-New → In review → Approved OR Escalated. Finalized tickets cannot be re-analyzed or finalized again. Re-analysis before finalization is allowed. The API enforces mandatory escalation independently of UI.
+New → In review → Approved OR Escalated. Finalized tickets cannot be re-analyzed or finalized again. Re-analysis before finalization is allowed. The API enforces mandatory escalation independently of UI, recalculates current risk before approval, rejects stale analysis and unsafe edited drafts, and audits blocked decisions.
 
 The optional model path runs only for routine supported categories. The first Responses call forces the get_approved_policy tool. The app validates tool name and exact policy ID; the second Responses call passes only the retrieved policy as tool output and disables further tool calls. The model cannot access the account tool or make state decisions.
 

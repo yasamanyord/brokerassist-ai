@@ -75,6 +75,7 @@ def probe(mode: str="mock", repeats: int=1) -> dict:
     status="PASS" if passes==len(rows) else "FAIL"
     return {"mode":mode,"captured_at_utc":datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "probe_suite_sha256":hashlib.sha256(json.dumps(CASES,ensure_ascii=False).encode()).hexdigest(),
+            "guardrails_sha256":hashlib.sha256((ROOT/"app/guardrails.py").read_bytes()).hexdigest(),
             "engine_sha256":hashlib.sha256((ROOT/"app/engine.py").read_bytes()).hexdigest(),
             "knowledge_sha256":hashlib.sha256((ROOT/"data/knowledge.json").read_bytes()).hexdigest(),
             "model":os.getenv("OPENAI_MODEL","gpt-4.1-mini") if mode=="live" else "mock-provider",

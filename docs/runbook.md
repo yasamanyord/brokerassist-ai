@@ -16,11 +16,11 @@ Start with run_demo.bat (Windows), the quick-start commands, or Docker. Visit ht
 - Empty inbox: check server logs and BROKERASSIST_DB path. Startup initializes sample seed only for a fresh database.
 - Model fallback: verify environment variables, access, model ID and network; use the offline draft meanwhile. Never print credentials or log API keys.
 - Webhook 503: secret not configured; 401: incorrect secret; duplicate=true: existing event reused.
-- Approval 409: ticket is not in review, is already finalized, or requires specialist escalation. Do not bypass.
+- Approval 409: ticket is not in review, is already finalized, requires specialist escalation, has stale guardrail analysis, or contains an unsafe draft. Re-analyze, edit, or escalate as appropriate. Do not bypass.
 - LLM draft inconsistent with policy: reject it by escalation. Investigate and add a regression case.
 
 ## Test and release gate
-Run python -m unittest discover -s tests -v and python evaluations/run.py, then python -m evaluations.regression --reviewed-drafts evaluations/reviewed_drafts.json and python -m evaluations.llm_probe --mode mock. For prompt or model changes, also use the opt-in live probe and a paired human review. See [LLM release and operations](llm_release_and_operations.md). For UI checks, run tests/browser_smoke.py with a working Playwright Chromium, inspect desktop and mobile layout, test human actions. Review docs and actual test results. Do not deploy in a real brokerage without authentication, privacy review, client acceptance and tested integration.
+Run python -m unittest discover -s tests -v and python evaluations/run.py, then python -m evaluations.regression --reviewed-drafts evaluations/reviewed_drafts.json and python -m evaluations.llm_probe --mode mock and python -m evaluations.safety. For prompt or model changes, also use the opt-in live probe and a paired human review. See [LLM release and operations](llm_release_and_operations.md). For UI checks, run tests/browser_smoke.py with a working Playwright Chromium, inspect desktop and mobile layout, test human actions. Review docs and actual test results. Do not deploy in a real brokerage without authentication, privacy review, client acceptance and tested integration.
 
 ## Maintenance
 Policy owner should version approved policy and templates, re-run tests after changes, add examples for evolving support issues, review false escalations and missed escalation cases, and document observed failures. For live use, add health monitoring and alerting, restore drills, access reviews, incident handling, and controlled rollout.

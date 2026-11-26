@@ -3,6 +3,7 @@ from __future__ import annotations
 import json, os, re, urllib.request, math
 from pathlib import Path
 from collections import Counter
+from .guardrails import VERSION as GUARDRAIL_VERSION, risk_signals, unsafe_draft_reasons
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICIES = json.loads((ROOT / "data/knowledge.json").read_text(encoding="utf-8"))
@@ -45,14 +46,14 @@ def retrieve(text: str, limit: int = 3) -> list[dict]:
     ranked.sort(key=lambda x:(-x[0],x[1]["id"]))
     return [{**p,"score":round(score,2)} for score,p in ranked[:limit] if score >= 1.2]
 
-def lookup_transaction(ticket: dict) -> dict:
+def lookup_transaction(ticket: dict, expected_type: str | None = None) -> dict:
     """Read-only simulator. Authorization comes from trusted seed context."""
     if not ticket.get("verified") or not ticket.get("transaction_ref"):
         return {"tool":"lookup_transaction","status":"blocked","reason":"Verified matching reference required"}
     records = {"TX-2001":{"state":"Pending review","customer":"Alex Morgan","type":"deposit"},
                "TX-2002":{"state":"Processing","customer":"Sam Rivera","type":"withdrawal"}}
     ref=ticket["transaction_ref"]; record=records.get(ref)
-    if not record or record["customer"] != ticket["customer"] or not re.search(r"\b"+re.escape(ref)+r"\b", ticket["message"]):
+    if not record or record["customer"] != ticket["customer"] or (expected_type and record["type"] != expected_type) or not re.search(r"\b"+re.escape(ref)+r"\b", ticket["message"]):
         return {"tool":"lookup_transaction","status":"blocked","reason":"No authorized matching transaction"}
     return {"tool":"lookup_transaction","status":"ok","reference":ref,"state":record["state"],"simulated":True}
 
@@ -88,6 +89,10 @@ def optional_llm_draft(message: str, policy: dict, baseline: str, category: str)
         data=responses_request({**config,"input":messages+items+[tool_output],"tools":[tool],"tool_choice":"none"},api_key)
         result=" ".join(c.get("text","") for o in data.get("output",[]) for c in o.get("content",[]) if c.get("type")=="output_text").strip()
         if data.get("status")=="incomplete" or not result or len(result)>1800 or INJECTION.search(result): raise ValueError("Invalid draft")
+        reasons=unsafe_draft_reasons(result)
+        if reasons:
+            trace.append({"tool":"validate_draft","status":"blocked","reason":"Unsafe draft: "+", ".join(reasons)})
+            return baseline,"offline fallback — unsafe draft blocked",trace
         return redact(result), "LLM draft — review required", trace
     except Exception:
         return baseline,"offline fallback — provider or tool validation failed",trace
@@ -95,21 +100,34 @@ def optional_llm_draft(message: str, policy: dict, baseline: str, category: str)
 def analyze(ticket: dict, allow_llm: bool = True) -> dict:
     message=redact(ticket["message"]); text=ticket["subject"]+" "+message
     retrieved=retrieve(text)
-    injected=bool(INJECTION.search(text)); security=bool(SECURITY.search(text)); advice=bool(ADVICE.search(text))
+    signals=risk_signals(text)
+    codes={r["code"] for r in signals}
+    risk_categories={r["category"] for r in signals}
+    injected=bool(INJECTION.search(text)) or "prompt_injection" in codes
+    security=bool(SECURITY.search(text)) or "security_or_privacy" in codes
+    advice=bool(ADVICE.search(text))
     if injected or security:
         policy=BY_ID["KB-010"]
     elif retrieved and retrieved[0]["category"]!="General":
         policy=BY_ID[retrieved[0]["id"]]
     else:
         policy=BY_ID["KB-012"]
+    # Risk scanning is independent of the highest-ranked knowledge match. If a
+    # routine question masks a payment/KYC/transaction/mutation request, select
+    # the explicit risk policy before any provider or transaction-tool call.
+    if not (injected or security or advice) and signals:
+        selected_risk=signals[0]["category"]
+        if policy["category"] not in MANDATORY or "Security" in risk_categories:
+            policy=next(p for p in POLICIES if p["category"]==selected_risk)
     category=policy["category"]; priority,team=ROUTES[category]
     if injected: reason="Untrusted instructions detected; Security review required."
     elif security: reason="Potential security or privacy issue."
     elif advice: reason="Financial advice request; human review required."
-    elif category in MANDATORY: reason="Sensitive category requires specialist review."
+    elif category in MANDATORY or signals: reason="Sensitive category or requested action requires specialist review."
     elif category=="General": reason="No specific supported policy; clarification required."
     else: reason="Routine policy explanation; operator approval required."
-    mandatory = category in MANDATORY or injected or advice
+    mandatory = category in MANDATORY or injected or advice or bool(signals)
+    if mandatory and priority in {"Low","Medium"}: priority="High"
     if advice and not injected and not security:
         priority="High"; team="Compliance"
     citations=[{"id":policy["id"],"title":policy["title"],"excerpt":policy["policy"]}]
@@ -119,7 +137,10 @@ def analyze(ticket: dict, allow_llm: bool = True) -> dict:
                 citations.append({"id":p["id"],"title":p["title"],"excerpt":p["policy"]})
     calls=[]
     if category in {"Deposit","Withdrawal"} and not injected and not advice:
-        calls.append(lookup_transaction(ticket))
+        if len(risk_categories)>1:
+            calls.append({"tool":"lookup_transaction","status":"blocked","reason":"Multiple sensitive intents require specialist review"})
+        else:
+            calls.append(lookup_transaction(ticket, expected_type="deposit" if category=="Deposit" else "withdrawal"))
     draft=policy["reply"]
     if advice and not injected and not security:
         draft="I can explain approved account and platform information, but I cannot recommend a trade or investment or predict returns. Our support team can help with your service-related questions."
@@ -134,4 +155,5 @@ def analyze(ticket: dict, allow_llm: bool = True) -> dict:
         calls.extend(model_calls)
     return {"category":category,"priority":priority,"team":team,"mandatory_escalation":mandatory,
             "decision":"Escalate" if mandatory else "Review","reason":reason,"draft":draft,
-            "citations":citations,"tool_calls":calls,"mode":mode,"injection_detected":injected}
+            "citations":citations,"tool_calls":calls,"mode":mode,"injection_detected":injected,
+            "guardrail_version":GUARDRAIL_VERSION,"risk_signals":signals}

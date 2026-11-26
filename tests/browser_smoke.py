@@ -20,6 +20,7 @@ with tempfile.TemporaryDirectory() as tmp:
             page.goto("http://127.0.0.1:8878")
             page.get_by_role("button",name="Analyze ticket").click()
             page.get_by_text("Specialist review required",exact=False).wait_for()
+            page.get_by_text("Risk flags:",exact=False).wait_for()
             assert page.get_by_role("button",name="Approve local draft").is_disabled()
             
             page.get_by_role("button",name="Escalate to Finance").click()
@@ -27,6 +28,10 @@ with tempfile.TemporaryDirectory() as tmp:
             page.locator('[data-ticket="BA-1041"]').click()
             page.get_by_role("button",name="Analyze ticket").click()
             page.get_by_text("Operator review required",exact=False).wait_for()
+            page.locator("#draft").fill("Please send your password here.")
+            page.get_by_role("button",name="Approve local draft").click()
+            page.get_by_text("Draft violates the safety boundary",exact=False).wait_for()
+            page.get_by_role("button",name="Approve local draft").wait_for()
             page.locator("#draft").fill("Reviewed demo reply. Please select the correct server.")
             page.get_by_role("button",name="Approve local draft").click()
             page.get_by_text("Finalized locally: Approved",exact=False).wait_for()
